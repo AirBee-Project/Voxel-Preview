@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import DeckGL from "@deck.gl/react";
+import { TileLayer } from "@deck.gl/geo-layers";
+import { BitmapLayer } from "@deck.gl/layers";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
+  const layers = [];
+  const layer_1 = new TileLayer({
+    id: "TileLayer",
+    data: "https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png",
+    maxZoom: 18,
+    minZoom: 0,
+    renderSubLayers: (props) => {
+      // eslint-disable-next-line react/prop-types
+      const { boundingBox } = props.tile;
+      return new BitmapLayer(props, {
+        data: undefined,
+        // eslint-disable-next-line react/prop-types
+        image: props.data,
+        bounds: [
+          boundingBox[0][0],
+          boundingBox[0][1],
+          boundingBox[1][0],
+          boundingBox[1][1],
+        ],
+      });
+    },
+    pickable: true,
+  });
+  layers.push(layer_1);
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="bg-black">
+      <DeckGL
+        initialViewState={{
+          longitude: 139.2125,
+          latitude: 35.725,
+          zoom: 14,
+        }}
+        controller
+        layers={[layers]}
+        width="100%"
+        height="100%"
+      />
+    </div>
+  );
 }
-
-export default App
