@@ -24,7 +24,7 @@ export default function toDisplayData(pureVoxels: PureVoxel[]): displayCube[] {
         40075016.68 / pureVoxels[i].Z ** 2,
         33554432 / pureVoxels[i].Z ** 2,
       ],
-      color: [255, 0, 0],
+      color: [255, 0, 0, 125],
     });
   }
   console.log(result);
