@@ -41,7 +41,7 @@ export default function App() {
     data: [{ position: [139.6917, 35.6895] }],
     getPosition: (d) => d.position,
     getColor: [0, 200, 255],
-    mesh: "https://raw.githubusercontent.com/AirBee-Project/Voxel-Preview/refs/heads/main/src/Box.obj?token=GHSAT0AAAAAAC74XFWPNDICQBCGUM27DVAAZ77FM5Q",
+    mesh: "https://raw.githubusercontent.com/AirBee-Project/Voxel-Preview/refs/heads/main/src/Box.obj?token=GHSAT0AAAAAAC74XFWPQC6JYIY7JPXQIVSKZ77FNRA",
     sizeScale: 100,
     getOrientation: [0, 0, 0],
     getTranslation: [0, 0, 1], // 直方体の底を地面に合わせるなら高さの半分
