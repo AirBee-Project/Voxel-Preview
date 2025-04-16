@@ -76,8 +76,9 @@ export default function App() {
           className="w-[100%] h-[7vh] border-2"
           placeholder="ここにボクセルを入力"
           onChange={(e) => {
-            setVoxelInput(e.target.value);
-            setVoxelparse(voxelParser(voxelInput));
+            const newValue = e.target.value;
+            setVoxelInput(newValue);
+            setVoxelparse(voxelParser(newValue));
           }}
         />
         <input

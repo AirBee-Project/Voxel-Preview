@@ -15,9 +15,11 @@ export default function voxelParser(voxelsString: string): Voxel[] {
     }
     return voxelString;
   });
-  console.log(voxelStringList);
   //型に変換
   for (let i = 0; i < voxelStringList.length; i++) {
+    if (voxelStringList[i] === "") {
+      continue;
+    }
     let voxelParseList = voxelStringList[i].split("/");
     let zValue: number = Number(voxelParseList[0]);
     let resultVoxel: Voxel = {
@@ -48,9 +50,11 @@ function parseDimensionRange(
       }
     }
   } else if (item.indexOf(":") != -1) {
+    console.log("範囲を検知");
     let itemList = item.split(":");
     let numberItemList: number[] = itemList.map((num) => Number(num));
     numberItemList = numberItemList.sort();
+    console.log(numberItemList);
     return [numberItemList[0], numberItemList[1]];
   } else {
     return Number(item);
