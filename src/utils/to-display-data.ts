@@ -8,9 +8,11 @@ export default function toDisplayData(pureVoxels: PureVoxel[]): displayCube[] {
   for (let i = 0; i < pureVoxels.length; i++) {
     result.push({
       position: [
+        //ここは180-0 360-0が範囲でなければならない
         (90 / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].Y,
         (180 / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].X,
       ],
+      //±の条件が怪しい
       altitude:
         ((33554432 * 2) / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].F -
           (33554432 / pureVoxels[i].Z ** 2) * pureVoxels[i].Z <

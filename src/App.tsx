@@ -5,10 +5,11 @@ import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 import { OBJLoader } from "@loaders.gl/obj";
 import { useState } from "react";
 import voxelParser from "./utils/voxel-parser";
-import { Voxel } from "./types/voxel.types";
 import toPureVoxel from "./utils/to-pure-voxel";
 import { displayCube } from "./types/displaycube";
 import toDisplayData from "./utils/to-display-data";
+import { PureVoxel } from "./types/pureVoxel.types";
+import pureVoxelToString from "./utils/pureVoxel-to-string";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -21,7 +22,7 @@ const INITIAL_VIEW_STATE = {
 export default function App() {
   const [voxelInput, setVoxelInput] = useState<string>("");
   const [voxelInputError, setVoxelInputError] = useState<boolean>(false);
-  const [pureVoxel, setPureVoxel] = useState<Voxel[]>([]);
+  const [pureVoxel, setPureVoxel] = useState<PureVoxel[]>([]);
   const [displayCubes, setDisplayCubes] = useState<displayCube[]>([]);
 
   const TileMapLayer = new TileLayer({
@@ -92,7 +93,7 @@ export default function App() {
         <input
           type="text"
           name="渡す"
-          value={String(pureVoxel)}
+          value={pureVoxelToString(pureVoxel)}
           className="w-[100%] h-[7vh] border-2 mt-[1vh]"
           placeholder="パース済みのボクセルの値"
         />
