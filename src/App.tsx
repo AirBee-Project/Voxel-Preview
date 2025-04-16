@@ -6,7 +6,7 @@ import { OBJLoader } from "@loaders.gl/obj";
 import { useState } from "react";
 import voxelParser from "./utils/voxel-parser";
 import { Voxel } from "./types/voxel.types";
-
+import toPureVoxel from "./utils/to-pure-voxel";
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
   latitude: 35.6895,
@@ -18,7 +18,7 @@ const INITIAL_VIEW_STATE = {
 export default function App() {
   const [voxelInput, setVoxelInput] = useState<string>("");
   const [voxelInputError, setVoxelInputError] = useState<boolean>(false);
-  const [voxelParse, setVoxelparse] = useState<Voxel[]>([]);
+  const [pureVoxel, setPureVoxel] = useState<Voxel[]>([]);
 
   const TileMapLayer = new TileLayer({
     id: "TileMapLayer",
@@ -78,13 +78,14 @@ export default function App() {
           onChange={(e) => {
             const newValue = e.target.value;
             setVoxelInput(newValue);
-            setVoxelparse(voxelParser(newValue));
+            const parsedVoxels = voxelParser(newValue);
+            setPureVoxel(toPureVoxel(parsedVoxels));
           }}
         />
         <input
           type="text"
           name="渡す"
-          value={String(voxelParse)}
+          value={String(pureVoxel)}
           className="w-[100%] h-[7vh] border-2 mt-[1vh]"
           placeholder="パース済みのボクセルの値"
         />

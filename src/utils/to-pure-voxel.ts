@@ -3,11 +3,11 @@ import { PureVoxel } from "../types/pureVoxel.types";
 
 export default function toPureVoxel(Voxels: Voxel[]): PureVoxel[] {
   let result: PureVoxel[] = [];
-  console.log(Voxels);
   for (let i = 0; i < Voxels.length; i++) {
     let x: number[] = enumerateRange(Voxels[0].X);
     let y: number[] = enumerateRange(Voxels[0].Y);
     let f: number[] = enumerateRange(Voxels[0].F);
+    console.log(x);
     for (let xindex = 0; xindex < x.length; xindex++) {
       for (let yindex = 0; yindex < y.length; yindex++) {
         for (let findex = 0; findex < f.length; findex++) {
@@ -21,21 +21,19 @@ export default function toPureVoxel(Voxels: Voxel[]): PureVoxel[] {
       }
     }
   }
-
+  //重複排除
+  result = [...new Set(result)];
   return result;
 }
 
 function enumerateRange(item: [number, number] | number): number[] {
   let result: number[] = [];
-  console.log(item);
-  //この下のIFが意図通りに機能していない
   if (typeof item === "number") {
     result.push(item as number);
   } else {
-    //こいつが一切出てこない
-    console.log("タプル用の処理にしなきゃ..");
     let tmp = item as [number, number];
-    if ((tmp[0] = tmp[1])) {
+    console.log(tmp);
+    if (tmp[0] == tmp[1]) {
       result.push(tmp[0]);
     } else {
       tmp = tmp.sort();
@@ -44,6 +42,5 @@ function enumerateRange(item: [number, number] | number): number[] {
       }
     }
   }
-  console.log(result);
   return result;
 }
