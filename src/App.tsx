@@ -5,8 +5,8 @@ import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 import { OBJLoader } from "@loaders.gl/obj";
 
 const INITIAL_VIEW_STATE = {
-  longitude: 139.767,
-  latitude: 35.6812,
+  longitude: 139.6917,
+  latitude: 35.6895,
   zoom: 15,
   pitch: 60,
   bearing: 0,
@@ -41,11 +41,12 @@ export default function App() {
     data: [{ position: [139.6917, 35.6895] }],
     getPosition: (d) => d.position,
     getColor: [0, 200, 255],
-    mesh: "https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/humanoid_quad.obj",
-    sizeScale: 1,
+    mesh: ".Box.obj",
+    sizeScale: 100,
     getOrientation: [0, 0, 0],
     getTranslation: [0, 0, 1], // 直方体の底を地面に合わせるなら高さの半分
     pickable: true,
+    getScale: [1, 1, 1],
     loaders: [OBJLoader],
   });
   return (
