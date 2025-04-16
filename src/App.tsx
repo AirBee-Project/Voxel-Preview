@@ -41,12 +41,12 @@ export default function App() {
     data: [{ position: [139.6917, 35.6895] }],
     getPosition: (d) => d.position,
     getColor: [0, 200, 255, 124],
-    mesh: "https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/humanoid_quad.obj",
-    sizeScale: 100,
+    mesh: "https://raw.githubusercontent.com/AirBee-Project/Voxel-Preview/refs/heads/main/src/Box.obj?token=GHSAT0AAAAAAC74XFWOPUSLCEGJW6VL3WNGZ77F2BA",
+    sizeScale: 1,
     getOrientation: [0, 0, 0],
     getTranslation: [0, 0, 0], // 直方体の底を地面に合わせるなら高さの半分
     pickable: true,
-    getScale: [2, 2, 2],
+    getScale: [1, 1, 1],
     loaders: [OBJLoader],
   });
   return (
