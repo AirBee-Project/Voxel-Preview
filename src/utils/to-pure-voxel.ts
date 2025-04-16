@@ -3,6 +3,7 @@ import { PureVoxel } from "../types/pureVoxel.types";
 
 export default function toPureVoxel(Voxels: Voxel[]): PureVoxel[] {
   let result: PureVoxel[] = [];
+  console.log(Voxels);
   for (let i = 0; i < Voxels.length; i++) {
     let x: number[] = enumerateRange(Voxels[0].X);
     let y: number[] = enumerateRange(Voxels[0].Y);
@@ -20,12 +21,19 @@ export default function toPureVoxel(Voxels: Voxel[]): PureVoxel[] {
       }
     }
   }
+
   return result;
 }
 
 function enumerateRange(item: [number, number] | number): number[] {
   let result: number[] = [];
-  if (typeof item === "object" && Array.isArray(item)) {
+  console.log(item);
+  //この下のIFが意図通りに機能していない
+  if (typeof item === "number") {
+    result.push(item as number);
+  } else {
+    //こいつが一切出てこない
+    console.log("タプル用の処理にしなきゃ..");
     let tmp = item as [number, number];
     if ((tmp[0] = tmp[1])) {
       result.push(tmp[0]);
@@ -36,8 +44,6 @@ function enumerateRange(item: [number, number] | number): number[] {
       }
     }
   }
-  if (typeof item === "number") {
-    result.push(item as number);
-  }
+  console.log(result);
   return result;
 }
