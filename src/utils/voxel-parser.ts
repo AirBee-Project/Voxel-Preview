@@ -1,4 +1,5 @@
 import type { Voxel } from "../types/voxel.types";
+import toPureVoxel from "./to-pure-voxel";
 
 export default function voxelParser(voxelsString: string): Voxel[] {
   let voxelStringList: String[] = voxelsString.split(",");
@@ -30,8 +31,7 @@ export default function voxelParser(voxelsString: string): Voxel[] {
     };
     result.push(resultVoxel);
   }
-  console.log(result);
-  return result;
+  return toPureVoxel(result);
 }
 
 function parseDimensionRange(
