@@ -1,25 +1,30 @@
 import { PureVoxel } from "../types/pureVoxel.types";
-import { Cube } from "../types/cube.types";
+import { displayCube } from "../types/displaycube";
 
-export default function toDisplayData(pureVoxels: PureVoxel[]): Cube[] {
+export default function toDisplayData(pureVoxels: PureVoxel[]): displayCube[] {
   //ボクセルのPureIDから中心点、縦、横、奥行きの長さを作成する
-  let result: Cube[] = [];
+  let result: displayCube[] = [];
+  console.log(pureVoxels);
   for (let i = 0; i < pureVoxels.length; i++) {
     result.push({
-      center: {
-        latitude_deg: (90 / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].Y,
-        longitude_deg: (180 / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].X,
-        altitude_m:
-          ((33554432 * 2) / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].F -
-            (33554432 / pureVoxels[i].Z ** 2) * pureVoxels[i].Z <
-          0
-            ? -1
-            : 1,
-      },
-      height_m: 33554432 / pureVoxels[i].Z ** 2,
-      width_m: 40075016.68 / pureVoxels[i].Z ** 2,
-      depth_m: 40075016.68 / pureVoxels[i].Z ** 2,
+      position: [
+        (90 / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].Y,
+        (180 / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].X,
+      ],
+      altitude:
+        ((33554432 * 2) / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].F -
+          (33554432 / pureVoxels[i].Z ** 2) * pureVoxels[i].Z <
+        0
+          ? -1
+          : 1,
+      scale: [
+        40075016.68 / pureVoxels[i].Z ** 2,
+        40075016.68 / pureVoxels[i].Z ** 2,
+        33554432 / pureVoxels[i].Z ** 2,
+      ],
+      color: [255, 0, 0],
     });
   }
+  console.log(result);
   return result;
 }

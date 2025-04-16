@@ -7,6 +7,9 @@ import { useState } from "react";
 import voxelParser from "./utils/voxel-parser";
 import { Voxel } from "./types/voxel.types";
 import toPureVoxel from "./utils/to-pure-voxel";
+import { displayCube } from "./types/displaycube";
+import toDisplayData from "./utils/to-display-data";
+
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
   latitude: 35.6895,
@@ -19,6 +22,7 @@ export default function App() {
   const [voxelInput, setVoxelInput] = useState<string>("");
   const [voxelInputError, setVoxelInputError] = useState<boolean>(false);
   const [pureVoxel, setPureVoxel] = useState<Voxel[]>([]);
+  const [displayCubes, setDisplayCubes] = useState<displayCube[]>([]);
 
   const TileMapLayer = new TileLayer({
     id: "TileMapLayer",
@@ -45,17 +49,18 @@ export default function App() {
 
   const layer = new SimpleMeshLayer({
     id: "box-geometry",
-    data: [{ position: [139.6917, 35.6895] }, { position: [139.69, 35.6895] }],
+    data: displayCubes,
     getPosition: (d) => d.position,
-    getColor: [0, 200, 255, 124],
-    mesh: "https://raw.githubusercontent.com/AirBee-Project/Voxel-Preview/refs/heads/main/src/Box.obj?token=GHSAT0AAAAAAC74XFWOPUSLCEGJW6VL3WNGZ77F2BA",
-    sizeScale: 100,
+    getColor: (d) => d.color,
+    mesh: "https://raw.githubusercontent.com/Tomoro0726/filehost/refs/heads/main/Box.obj",
+    sizeScale: 1,
     getOrientation: [0, 0, 0],
-    getTranslation: [0, 0, 0], // 直方体の底を地面に合わせるなら高さの半分
+    getTranslation: (d) => [0, 0, d.altitude / 2], // 地面に底を合わせる
+    getScale: (d) => d.scale,
     pickable: true,
-    getScale: [1, 1, 1],
     loaders: [OBJLoader],
   });
+
   return (
     <div>
       <div>
@@ -79,7 +84,9 @@ export default function App() {
             const newValue = e.target.value;
             setVoxelInput(newValue);
             const parsedVoxels = voxelParser(newValue);
-            setPureVoxel(toPureVoxel(parsedVoxels));
+            const pureVoxels = toPureVoxel(parsedVoxels);
+            setPureVoxel(pureVoxels);
+            setDisplayCubes(toDisplayData(pureVoxels));
           }}
         />
         <input
