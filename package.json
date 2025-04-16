@@ -10,17 +10,25 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@deck.gl/core": "^9.1.9",
     "@deck.gl/geo-layers": "^9.1.9",
     "@deck.gl/layers": "^9.1.9",
+    "@deck.gl/mesh-layers": "^9.1.9",
     "@deck.gl/react": "^9.1.9",
+    "@loaders.gl/obj": "^4.3.3",
+    "@luma.gl/constants": "^9.1.7",
+    "@luma.gl/core": "^9.1.7",
+    "@luma.gl/engine": "^9.1.7",
     "deck.gl": "^9.1.9",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "three": "^0.175.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/three": "^0.175.0",
     "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
