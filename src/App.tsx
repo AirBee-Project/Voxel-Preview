@@ -56,7 +56,7 @@ export default function App() {
     mesh: "https://raw.githubusercontent.com/Tomoro0726/filehost/refs/heads/main/Box.obj",
     sizeScale: 1,
     getOrientation: [0, 0, 0],
-    getTranslation: (d) => [0, 0, d.altitude / 2], // 地面に底を合わせる
+    getTranslation: (d) => [0, 0, d.altitude],
     getScale: (d) => d.scale,
     pickable: true,
     loaders: [OBJLoader],

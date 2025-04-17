@@ -9,22 +9,16 @@ export default function toDisplayData(pureVoxels: PureVoxel[]): displayCube[] {
     result.push({
       position: [
         //ここは180-0 360-0が範囲でなければならない
-        (90 / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].Y,
-        (180 / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].X,
+        0, 0,
       ],
       //±の条件が怪しい
-      altitude:
-        ((33554432 * 2) / pureVoxels[i].Z ** 2 + 1) * pureVoxels[i].F -
-          (33554432 / pureVoxels[i].Z ** 2) * pureVoxels[i].Z <
-        0
-          ? -1
-          : 1,
+      altitude: 1,
       scale: [
-        40075016.68 / pureVoxels[i].Z ** 2,
-        40075016.68 / pureVoxels[i].Z ** 2,
-        33554432 / pureVoxels[i].Z ** 2,
+        40075016.68 / 2 ** (pureVoxels[i].Z + 1),
+        40075016.68 / 2 ** (pureVoxels[i].Z + 1),
+        33554432 / 2 ** pureVoxels[i].Z,
       ],
-      color: [255, 0, 0, 125],
+      color: [255, 125, 125, 100],
     });
   }
   console.log(result);
