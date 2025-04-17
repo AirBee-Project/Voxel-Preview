@@ -4,14 +4,11 @@ import { BitmapLayer } from "@deck.gl/layers";
 import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 import { OBJLoader } from "@loaders.gl/obj";
 import { useState } from "react";
-import voxelParser from "./utils/Hvoxel-parse";
-import toPureVoxel from "./utils/Hvoxel-to-Pvoxel";
 import { displayCube } from "./types/displaycube";
-import toDisplayData from "./utils/to-display-data";
 import { PureVoxel } from "./types/pureVoxel.types";
 import pureVoxelToString from "./utils/Pvoxel-to-string";
 import hyperVoxelParse from "./utils/Hvoxel-parse";
-import HvoxelToPvoxel from "./utils/Hvoxel-to-Pvoxel";
+import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -78,16 +75,17 @@ export default function App() {
         <h1>コンマ区切りでボクセルを入力</h1>
         <input
           type="text"
-          name="渡す"
           value={hyperVoxels}
           className="w-[100%] h-[7vh] border-2"
           placeholder="ここにボクセルを入力"
           onChange={(e) => {
             const newValue = e.target.value;
+            //入力された値からHyperVoxleの型に当てはめる
             const hvoxels = hyperVoxelParse(newValue);
-            const pvoxles = HvoxelToPvoxel(hvoxels);
+            //HyperVoxelsをさらにPureVoxelに変換
+            const pvoxles = hvoxelsToPvoxels(hvoxels);
 
-            //各ステートに受け渡し
+            //計算した値を各ステートに受け渡し
             setVoxelInput(newValue);
           }}
         />
