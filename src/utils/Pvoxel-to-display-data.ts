@@ -1,8 +1,10 @@
 import { PureVoxel } from "../types/pureVoxel.types";
-import { displayCube } from "../types/displaycube";
+import { DisplayData } from "../types/displayData.types";
 
-export default function toDisplayData(pureVoxels: PureVoxel[]): displayCube[] {
-  const result: displayCube[] = [];
+export default function pvoxelToDisplayData(
+  pureVoxels: PureVoxel[]
+): DisplayData[] {
+  const result: DisplayData[] = [];
 
   for (let i = 0; i < pureVoxels.length; i++) {
     const voxel = pureVoxels[i];
@@ -10,7 +12,6 @@ export default function toDisplayData(pureVoxels: PureVoxel[]): displayCube[] {
 
     // ズームに応じたスケール（全体を 2^Z グリッドとして扱う）
     const scale = Math.pow(2, zoom);
-    const tileSize = 256;
 
     // X/Y をピクセル座標と見なし、緯度経度に変換（Webメルカトル）
     const lon = (voxel.X / scale) * 360 - 180;
@@ -33,7 +34,7 @@ export default function toDisplayData(pureVoxels: PureVoxel[]): displayCube[] {
       color: [255, 125, 125, 100], // RGBA
     });
   }
-
+  console.log(result);
   return result;
 }
 

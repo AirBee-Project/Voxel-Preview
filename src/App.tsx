@@ -4,11 +4,12 @@ import { BitmapLayer } from "@deck.gl/layers";
 import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 import { OBJLoader } from "@loaders.gl/obj";
 import { useState } from "react";
-import { displayCube } from "./types/displaycube";
+import { DisplayData } from "./types/displayData.types";
 import { PureVoxel } from "./types/pureVoxel.types";
 import pureVoxelToString from "./utils/Pvoxel-to-string";
 import hyperVoxelParse from "./utils/Hvoxel-parse";
 import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
+import pvoxelToDisplayData from "./utils/Pvoxel-to-display-data";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -21,7 +22,6 @@ const INITIAL_VIEW_STATE = {
 export default function App() {
   const [inputHvoxels, setInputHvoxels] = useState<string>("");
   const [pvoxels, setPvoxels] = useState<PureVoxel[]>([]);
-  const [displayData, setDisplayData] = useState<displayCube[]>([]);
 
   const TileMapLayer = new TileLayer({
     id: "TileMapLayer",
@@ -48,7 +48,14 @@ export default function App() {
 
   const layer = new SimpleMeshLayer({
     id: "box-geometry",
-    data: displayData,
+    data: [
+      {
+        position: [45, 22.5],
+        altitude: 0,
+        scale: [40075016.68 / 4, 40075016.68 / 4, 1000000],
+        color: [255, 125, 125, 100],
+      },
+    ],
     getPosition: (d) => d.position,
     getColor: (d) => d.color,
     mesh: "https://raw.githubusercontent.com/Tomoro0726/filehost/refs/heads/main/Box.obj",
