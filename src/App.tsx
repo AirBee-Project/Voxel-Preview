@@ -19,8 +19,8 @@ const INITIAL_VIEW_STATE = {
 };
 
 export default function App() {
-  const [hyperVoxels, setVoxelInput] = useState<string>("");
-  const [pureVoxels, setPureVoxel] = useState<PureVoxel[]>([]);
+  const [inputHvoxels, setInputHvoxels] = useState<string>("");
+  const [pvoxels, setPvoxels] = useState<PureVoxel[]>([]);
   const [displayData, setDisplayData] = useState<displayCube[]>([]);
 
   const TileMapLayer = new TileLayer({
@@ -75,24 +75,27 @@ export default function App() {
         <h1>コンマ区切りでボクセルを入力</h1>
         <input
           type="text"
-          value={hyperVoxels}
+          value={inputHvoxels}
           className="w-[100%] h-[7vh] border-2"
           placeholder="ここにボクセルを入力"
           onChange={(e) => {
             const newValue = e.target.value;
+            setInputHvoxels(newValue);
+
             //入力された値からHyperVoxleの型に当てはめる
             const hvoxels = hyperVoxelParse(newValue);
             //HyperVoxelsをさらにPureVoxelに変換
-            const pvoxles = hvoxelsToPvoxels(hvoxels);
+            const pvoxels = hvoxelsToPvoxels(hvoxels);
 
             //計算した値を各ステートに受け渡し
-            setVoxelInput(newValue);
+            setPvoxels(pvoxels);
           }}
         />
         <input
           type="text"
           name="渡す"
-          value={pureVoxelToString(pureVoxels)}
+          //PureVoxelをテキストの形に変換
+          value={pureVoxelToString(pvoxels)}
           className="w-[100%] h-[7vh] border-2 mt-[1vh]"
           placeholder="パース済みのボクセルの値"
         />
