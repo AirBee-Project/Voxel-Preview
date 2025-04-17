@@ -7,7 +7,6 @@ export default function toPureVoxel(Voxels: Voxel[]): PureVoxel[] {
     let x: number[] = enumerateRange(Voxels[0].X);
     let y: number[] = enumerateRange(Voxels[0].Y);
     let f: number[] = enumerateRange(Voxels[0].F);
-    console.log(x);
     for (let xindex = 0; xindex < x.length; xindex++) {
       for (let yindex = 0; yindex < y.length; yindex++) {
         for (let findex = 0; findex < f.length; findex++) {
@@ -32,7 +31,6 @@ function enumerateRange(item: [number, number] | number): number[] {
     result.push(item as number);
   } else {
     let tmp = item as [number, number];
-    console.log(tmp);
     if (tmp[0] == tmp[1]) {
       result.push(tmp[0]);
     } else {
