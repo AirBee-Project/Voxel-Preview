@@ -4,12 +4,14 @@ import { BitmapLayer } from "@deck.gl/layers";
 import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 import { OBJLoader } from "@loaders.gl/obj";
 import { useState } from "react";
-import voxelParser from "./utils/voxel-parser";
-import toPureVoxel from "./utils/to-pure-voxel";
+import voxelParser from "./utils/Hvoxel-parse";
+import toPureVoxel from "./utils/Hvoxel-to-Pvoxel";
 import { displayCube } from "./types/displaycube";
 import toDisplayData from "./utils/to-display-data";
 import { PureVoxel } from "./types/pureVoxel.types";
-import pureVoxelToString from "./utils/pureVoxel-to-string";
+import pureVoxelToString from "./utils/Pvoxel-to-string";
+import hyperVoxelParse from "./utils/Hvoxel-parse";
+import HvoxelToPvoxel from "./utils/Hvoxel-to-Pvoxel";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -20,10 +22,9 @@ const INITIAL_VIEW_STATE = {
 };
 
 export default function App() {
-  const [voxelInput, setVoxelInput] = useState<string>("");
-  const [voxelInputError, setVoxelInputError] = useState<boolean>(false);
-  const [pureVoxel, setPureVoxel] = useState<PureVoxel[]>([]);
-  const [displayCubes, setDisplayCubes] = useState<displayCube[]>([]);
+  const [hyperVoxels, setVoxelInput] = useState<string>("");
+  const [pureVoxels, setPureVoxel] = useState<PureVoxel[]>([]);
+  const [displayData, setDisplayData] = useState<displayCube[]>([]);
 
   const TileMapLayer = new TileLayer({
     id: "TileMapLayer",
@@ -50,7 +51,7 @@ export default function App() {
 
   const layer = new SimpleMeshLayer({
     id: "box-geometry",
-    data: displayCubes,
+    data: displayData,
     getPosition: (d) => d.position,
     getColor: (d) => d.color,
     mesh: "https://raw.githubusercontent.com/Tomoro0726/filehost/refs/heads/main/Box.obj",
@@ -78,26 +79,25 @@ export default function App() {
         <input
           type="text"
           name="渡す"
-          value={voxelInput}
+          value={hyperVoxels}
           className="w-[100%] h-[7vh] border-2"
           placeholder="ここにボクセルを入力"
           onChange={(e) => {
             const newValue = e.target.value;
+            const hvoxels = hyperVoxelParse(newValue);
+            const pvoxles = HvoxelToPvoxel(hvoxels);
+
+            //各ステートに受け渡し
             setVoxelInput(newValue);
-            const parsedVoxels = voxelParser(newValue);
-            const pureVoxels = toPureVoxel(parsedVoxels);
-            setPureVoxel(pureVoxels);
-            setDisplayCubes(toDisplayData(pureVoxels));
           }}
         />
         <input
           type="text"
           name="渡す"
-          value={pureVoxelToString(pureVoxel)}
+          value={pureVoxelToString(pureVoxels)}
           className="w-[100%] h-[7vh] border-2 mt-[1vh]"
           placeholder="パース済みのボクセルの値"
         />
-        <p>{voxelInputError ? "エラーがあります" : "エラーなし"}</p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import type { Voxel } from "../types/voxel.types";
 
-export default function voxelParser(voxelsString: string): Voxel[] {
+export default function hyperVoxelParse(voxelsString: string): Voxel[] {
   let voxelStringList: String[] = voxelsString.split(",");
   let result: Voxel[] = [];
 
