@@ -8,32 +8,37 @@ export default function toDisplayData(pureVoxels: PureVoxel[]): displayCube[] {
     const voxel = pureVoxels[i];
     const zoom = voxel.Z;
 
-    // ピクセル位置 → 緯度経度変換（メルカトル変換と仮定）
+    // ズームに応じたスケール（全体を 2^Z グリッドとして扱う）
     const scale = Math.pow(2, zoom);
+    const tileSize = 256;
 
+    // X/Y をピクセル座標と見なし、緯度経度に変換（Webメルカトル）
     const lon = (voxel.X / scale) * 360 - 180;
     const latRad = Math.atan(Math.sinh(Math.PI * (1 - (2 * voxel.Y) / scale)));
     const lat = (latRad * 180) / Math.PI;
 
     const voxelSize = getVoxelSize(lat, zoom);
 
+    // 仮にZスケールも metersPerPixelY に合わせる（用途に応じて調整可能）
+    const zScale = voxelSize.metersPerPixelY;
+
     result.push({
-      position: [lon, lat],
-      altitude: 1, // 高度をそのまま使うか調整が必要
+      position: [lon, lat], // 緯度経度
+      altitude: voxel.Z * zScale, // 高さ（例：Z軸に高さを与える場合）
       scale: [
-        voxelSize.metersPerPixelX,
-        voxelSize.metersPerPixelY,
-        100, // Z軸スケーリング（必要に応じて変える）
+        voxelSize.metersPerPixelX, // 横幅（m）
+        voxelSize.metersPerPixelY, // 高さ（m）
+        zScale, // 奥行き（m）仮に高さと同じに
       ],
-      color: [255, 0, 0, 255],
+      color: [255, 125, 125, 100], // RGBA
     });
   }
-  console.log(result);
+
   return result;
 }
 
 function getVoxelSize(lat: number, zoom: number) {
-  const EARTH_RADIUS = 6378137;
+  const EARTH_RADIUS = 6378137; // m
   const EARTH_CIRCUMFERENCE = 2 * Math.PI * EARTH_RADIUS;
   const TILE_SIZE = 256;
 
