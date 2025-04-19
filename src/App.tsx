@@ -12,6 +12,7 @@ import hyperVoxelParse from "./utils/Hvoxel-parse";
 import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
 import pvoxelToDisplayData from "./utils/Pvoxel-to-display-data";
 import PvoxelToPointData from "./utils/Pvoxel-to-point-data";
+import { IconLayer } from "@deck.gl/layers";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -72,6 +73,31 @@ export default function App() {
     radiusUnits: "meters",
     pickable: true,
   });
+  const iconAtlas =
+    "https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png";
+  const iconMapping = {
+    marker: {
+      x: 0,
+      y: 0,
+      width: 128,
+      height: 128,
+      mask: true,
+      anchorY: 128,
+    },
+  };
+
+  const iconLayer = new IconLayer({
+    id: "icon-layer",
+    data: pointData,
+    pickable: true,
+    iconAtlas,
+    iconMapping,
+    getIcon: (d) => d.icon,
+    getPosition: (d) => d.position,
+    getSize: (d) => 50,
+    sizeScale: 1,
+    getColor: [255, 0, 0],
+  });
 
   return (
     <div>
@@ -79,7 +105,7 @@ export default function App() {
         <DeckGL
           initialViewState={INITIAL_VIEW_STATE}
           controller
-          layers={[TileMapLayer, scatterLayer]}
+          layers={[TileMapLayer, iconLayer]}
           width="100%"
           height="75%"
         />

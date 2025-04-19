@@ -2,8 +2,7 @@ import { PureVoxel } from "../types/pureVoxel";
 
 type PointData = {
   position: number[];
-  color: number[];
-  radius: number;
+  icon: string;
 };
 
 export default function PvoxelToPointData(
@@ -14,86 +13,27 @@ export default function PvoxelToPointData(
     let e = pvoxelToCoordinates(pureVoxels[i]);
     let radius = 1000000;
     result.push({
-      radius: radius,
-      color: [255, 0, 0],
       position: [e.maxLon, e.maxLat],
+      icon: "marker",
     });
     result.push({
-      radius: radius,
-      color: [255, 0, 0],
       position: [e.minLon, e.maxLat],
+      icon: "marker",
     });
     result.push({
-      radius: radius,
-      color: [255, 0, 0],
       position: [e.maxLon, e.minLat],
+      icon: "marker",
     });
     result.push({
-      radius: radius,
-      color: [255, 0, 0],
       position: [e.minLon, e.minLat],
+      icon: "marker",
     });
     result.push({
-      radius: radius,
-      color: [0, 255, 0],
       position: e.center,
+      icon: "marker",
     });
   }
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [0, 0],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [180, 0],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [-180, 0],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [90, 0],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [-90, 0],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [0, 85.0511],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 255, 255],
-    position: [0, -85.0511],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [0, 85.0511 / 2],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [0, -85.0511 / 2],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [0, 85.0511 / 4],
-  });
-  result.push({
-    radius: 200000,
-    color: [0, 0, 255],
-    position: [0, -85.0511 / 4],
-  });
+
   console.log(result);
   return result;
 }
