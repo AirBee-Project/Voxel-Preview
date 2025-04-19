@@ -28,10 +28,6 @@ export default function PvoxelToPointData(
       position: [e.minLon, e.minLat],
       icon: "marker",
     });
-    result.push({
-      position: e.center,
-      icon: "marker",
-    });
   }
 
   console.log(result);
@@ -43,20 +39,23 @@ type PvoxleCoordinates = {
   minLon: number;
   maxLat: number;
   minLat: number;
-  center: [number, number];
 };
 
 function pvoxelToCoordinates(item: PureVoxel): PvoxleCoordinates {
-  let minLon = -(180 - (360 / 2 ** item.Z) * (item.X - 0));
-  let maxLon = -(180 - (360 / 2 ** item.Z) * (item.X + 1));
-  let minLat = 0;
-  let maxLat = 0;
+  const n = 2 ** item.Z;
+  const lonDegPerTile = 360 / n;
+  const latDegPerTile = 170.1022 / n; // 85.0511 * 2
+
+  const minLon = -180 + lonDegPerTile * item.X;
+  const maxLon = -180 + lonDegPerTile * (item.X + 1);
+
+  const maxLat = 85.0511 - latDegPerTile * item.Y;
+  const minLat = 85.0511 - latDegPerTile * (item.Y + 1);
   console.log(maxLon);
   return {
     maxLon: maxLon,
     minLon: minLon,
     maxLat: maxLat,
     minLat: minLat,
-    center: [(maxLon + minLon) / 2, (maxLat + minLat) / 2],
   };
 }
