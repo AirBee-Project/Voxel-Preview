@@ -11,7 +11,6 @@ export default function PvoxelToPointData(
   let result: PointData[] = [];
   for (let i = 0; i < pureVoxels.length; i++) {
     let e = pvoxelToCoordinates(pureVoxels[i]);
-    let radius = 1000000;
     result.push({
       position: [e.maxLon, e.maxLat],
       icon: "marker",
@@ -30,11 +29,6 @@ export default function PvoxelToPointData(
     });
   }
 
-  console.log(result);
-  result.push({
-    position: [0, 66.5132],
-    icon: "marker",
-  });
   return result;
 }
 
@@ -48,14 +42,12 @@ type PvoxleCoordinates = {
 function pvoxelToCoordinates(item: PureVoxel): PvoxleCoordinates {
   const n = 2 ** item.Z;
   const lonDegPerTile = 360 / n;
-  const latDegPerTile = 170.1022 / n; // 85.0511 * 2
 
   const minLon = -180 + lonDegPerTile * item.X;
   const maxLon = -180 + lonDegPerTile * (item.X + 1);
 
   const maxLat = mercatorYToLat((1 / 2 ** item.Z) * item.Y);
   const minLat = mercatorYToLat((1 / 2 ** item.Z) * (item.Y + 1));
-  console.log(maxLon);
   return {
     maxLon: maxLon,
     minLon: minLon,
