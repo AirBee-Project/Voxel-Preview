@@ -1,5 +1,5 @@
-import { Voxel } from "../types/voxel.types";
-import { PureVoxel } from "../types/pureVoxel.types";
+import { Voxel } from "../types/voxel.d";
+import { PureVoxel } from "../types/pureVoxel";
 
 export default function hvoxelsToPvoxels(Voxels: Voxel[]): PureVoxel[] {
   let result: PureVoxel[] = [];

@@ -1,5 +1,5 @@
-import { PureVoxel } from "../types/pureVoxel.types";
-import { DisplayData } from "../types/displayData.types";
+import { PureVoxel } from "../types/pureVoxel";
+import { DisplayData } from "../types/displayData";
 
 export default function pvoxelToDisplayData(
   pureVoxels: PureVoxel[]

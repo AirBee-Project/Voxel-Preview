@@ -4,8 +4,8 @@ import { BitmapLayer } from "@deck.gl/layers";
 import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 import { OBJLoader } from "@loaders.gl/obj";
 import { useState } from "react";
-import { DisplayData } from "./types/displayData.types";
-import { PureVoxel } from "./types/pureVoxel.types";
+import { DisplayData } from "./types/displayData";
+import { PureVoxel } from "./types/pureVoxel";
 import pureVoxelToString from "./utils/Pvoxel-to-string";
 import hyperVoxelParse from "./utils/Hvoxel-parse";
 import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
@@ -50,9 +50,9 @@ export default function App() {
     id: "box-geometry",
     data: [
       {
-        position: [45, 22.5],
+        position: [0, 0],
         altitude: 0,
-        scale: [40075016.68 / 4, 40075016.68 / 4, 1000000],
+        scale: [40075016.68 / 2, 40075016.68 / 8, 1000000],
         color: [255, 125, 125, 100],
       },
     ],
