@@ -12,26 +12,26 @@ export default function PvoxelToPointData(
   let result: PointData[] = [];
   for (let i = 0; i < pureVoxels.length; i++) {
     let e = pvoxelToCoordinates(pureVoxels[i]);
-    let radius = 1000;
+    let radius = 1000000;
     result.push({
       radius: radius,
       color: [255, 0, 0],
-      position: [e.maxLat, e.maxLon],
+      position: [e.maxLon, e.maxLat],
     });
     result.push({
       radius: radius,
       color: [255, 0, 0],
-      position: [e.minLat, e.maxLon],
+      position: [e.minLon, e.maxLat],
     });
     result.push({
       radius: radius,
       color: [255, 0, 0],
-      position: [e.maxLat, e.minLon],
+      position: [e.maxLon, e.minLat],
     });
     result.push({
       radius: radius,
       color: [255, 0, 0],
-      position: [e.minLat, e.minLon],
+      position: [e.minLon, e.minLat],
     });
     result.push({
       radius: radius,
@@ -39,7 +39,6 @@ export default function PvoxelToPointData(
       position: e.center,
     });
   }
-  console.log(result);
   result.push({
     radius: 200000,
     color: [0, 0, 255],
@@ -72,9 +71,30 @@ export default function PvoxelToPointData(
   });
   result.push({
     radius: 200000,
-    color: [0, 0, 255],
+    color: [0, 255, 255],
     position: [0, -85.0511],
   });
+  result.push({
+    radius: 200000,
+    color: [0, 0, 255],
+    position: [0, 85.0511 / 2],
+  });
+  result.push({
+    radius: 200000,
+    color: [0, 0, 255],
+    position: [0, -85.0511 / 2],
+  });
+  result.push({
+    radius: 200000,
+    color: [0, 0, 255],
+    position: [0, 85.0511 / 4],
+  });
+  result.push({
+    radius: 200000,
+    color: [0, 0, 255],
+    position: [0, -85.0511 / 4],
+  });
+  console.log(result);
   return result;
 }
 
@@ -87,10 +107,11 @@ type PvoxleCoordinates = {
 };
 
 function pvoxelToCoordinates(item: PureVoxel): PvoxleCoordinates {
-  let minLon = 180 - (360 / 2 ** item.Z) * (item.X + 1);
-  let maxLon = 180 - (360 / 2 ** item.Z) * item.X;
-  let minLat = 90 - (180 / 2 ** item.Z) * (item.Y + 1);
-  let maxLat = 90 - (180 / 2 ** item.Z) * item.Y;
+  let minLon = -(180 - (360 / 2 ** item.Z) * (item.X - 0));
+  let maxLon = -(180 - (360 / 2 ** item.Z) * (item.X + 1));
+  let minLat = 0;
+  let maxLat = 0;
+  console.log(maxLon);
   return {
     maxLon: maxLon,
     minLon: minLon,
