@@ -31,6 +31,10 @@ export default function PvoxelToPointData(
   }
 
   console.log(result);
+  result.push({
+    position: [0, 66.5132],
+    icon: "marker",
+  });
   return result;
 }
 
@@ -49,8 +53,8 @@ function pvoxelToCoordinates(item: PureVoxel): PvoxleCoordinates {
   const minLon = -180 + lonDegPerTile * item.X;
   const maxLon = -180 + lonDegPerTile * (item.X + 1);
 
-  const maxLat = 85.0511 - latDegPerTile * item.Y;
-  const minLat = 85.0511 - latDegPerTile * (item.Y + 1);
+  const maxLat = mercatorYToLat((1 / 2 ** item.Z) * item.Y);
+  const minLat = mercatorYToLat((1 / 2 ** item.Z) * (item.Y + 1));
   console.log(maxLon);
   return {
     maxLon: maxLon,
@@ -58,4 +62,16 @@ function pvoxelToCoordinates(item: PureVoxel): PvoxleCoordinates {
     maxLat: maxLat,
     minLat: minLat,
   };
+}
+
+//y は 0〜1 の範囲で、地図の縦方向の位置（0 = 上端、1 = 下端）
+function mercatorYToLat(y: number): number {
+  const PI = Math.PI;
+  const radToDeg = 180 / PI;
+
+  // 逆メルカトル変換
+  const latRad = Math.atan(Math.sinh(PI * (1 - 2 * y)));
+  const latDeg = latRad * radToDeg;
+
+  return latDeg;
 }
