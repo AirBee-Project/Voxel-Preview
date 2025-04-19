@@ -3,8 +3,7 @@ import type { Voxel } from "../types/voxel.d";
 export default function hyperVoxelParse(voxelsString: string): Voxel[] {
   voxelsString = voxelsString.replace("[", "");
   voxelsString = voxelsString.replace("]", "");
-  voxelsString = voxelsString.replace("'", "");
-  console.log(voxelsString);
+  voxelsString = voxelsString.replace(/'/g, "");
   let voxelStringList: String[] = voxelsString.split(",");
   let result: Voxel[] = [];
 
