@@ -30,6 +30,7 @@ export default function hyperVoxelParse(voxelsString: string): Voxel[] {
     };
     result.push(resultVoxel);
   }
+  console.log(result);
   return result;
 }
 
@@ -40,12 +41,12 @@ function parseDimensionRange(
 ): number | [number, number] {
   if (item === "-") {
     if (dimension == "F") {
-      return [zoomLevel ** 2 - 1, -(zoomLevel ** 2)];
+      return [2 ** zoomLevel - 1, -(2 ** zoomLevel)];
     } else {
       if (zoomLevel == 0) {
         return 0;
       } else {
-        return [0, zoomLevel ** 2 - 1];
+        return [0, 2 ** zoomLevel - 1];
       }
     }
   } else if (item.indexOf(":") != -1) {

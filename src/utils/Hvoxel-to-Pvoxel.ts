@@ -22,7 +22,6 @@ export default function hvoxelsToPvoxels(Voxels: Voxel[]): PureVoxel[] {
   }
   //重複排除
   result = [...new Set(result)];
-  console.log(result);
   return result;
 }
 
