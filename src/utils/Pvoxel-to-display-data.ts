@@ -5,52 +5,68 @@ export default function pvoxelToDisplayData(
   pureVoxels: PureVoxel[]
 ): DisplayData[] {
   const result: DisplayData[] = [];
-
   for (let i = 0; i < pureVoxels.length; i++) {
-    const voxel = pureVoxels[i];
-    const zoom = voxel.Z;
+    let pvoxel = pureVoxels[i];
+    let coordinates = pvoxelToCoordinates(pvoxel);
 
-    // ズームに応じたスケール（全体を 2^Z グリッドとして扱う）
-    const scale = Math.pow(2, zoom);
-
-    // X/Y をピクセル座標と見なし、緯度経度に変換（Webメルカトル）
-    const lon = (voxel.X / scale) * 360 - 180;
-    const latRad = Math.atan(Math.sinh(Math.PI * (1 - (2 * voxel.Y) / scale)));
-    const lat = (latRad * 180) / Math.PI;
-
-    const voxelSize = getVoxelSize(lat, zoom);
-
-    // 仮にZスケールも metersPerPixelY に合わせる（用途に応じて調整可能）
-    const zScale = voxelSize.metersPerPixelY;
-
+    let xScale = 40075016.68 / 8;
+    let yScale = lonDistance_m(
+      coordinates.maxLon,
+      coordinates.minLon,
+      coordinates.maxLat,
+      coordinates.minLat
+    );
+    let fScale = 33554432 / 2 ** (pvoxel.Z + 1);
     result.push({
-      position: [lon, lat], // 緯度経度
-      altitude: voxel.Z * zScale, // 高さ（例：Z軸に高さを与える場合）
-      scale: [
-        voxelSize.metersPerPixelX, // 横幅（m）
-        voxelSize.metersPerPixelY, // 高さ（m）
-        zScale, // 奥行き（m）仮に高さと同じに
-      ],
-      color: [255, 125, 125, 100], // RGBA
+      position: coordinates.center,
+      altitude: 0,
+      scale: [xScale, yScale, fScale],
+      color: [255, 0, 0, 125],
     });
   }
-  console.log(result);
   return result;
 }
 
-function getVoxelSize(lat: number, zoom: number) {
-  const EARTH_RADIUS = 6378137; // m
-  const EARTH_CIRCUMFERENCE = 2 * Math.PI * EARTH_RADIUS;
-  const TILE_SIZE = 256;
+type PvoxleCoordinates = {
+  maxLon: number;
+  minLon: number;
+  maxLat: number;
+  minLat: number;
+  center: [number, number];
+};
 
-  const scale = TILE_SIZE * Math.pow(2, zoom);
-  const metersPerPixelY = EARTH_CIRCUMFERENCE / scale;
-
-  const latRad = (lat * Math.PI) / 180;
-  const metersPerPixelX = metersPerPixelY * Math.cos(latRad);
-
+function pvoxelToCoordinates(item: PureVoxel): PvoxleCoordinates {
+  let minLon = 180 - (360 / 2 ** item.Z) * (item.X + 1);
+  let maxLon = 180 - (360 / 2 ** item.Z) * item.X;
+  let minLat = 85.0511 - (170.1022 / 2 ** item.Z) * (item.Y + 1);
+  let maxLat = 85.0511 - (170.1022 / 2 ** item.Z) * item.Y;
   return {
-    metersPerPixelX,
-    metersPerPixelY,
+    maxLon: maxLon,
+    minLon: minLon,
+    maxLat: maxLat,
+    minLat: minLat,
+    center: [-(maxLon + minLon) / 2, (maxLat + minLat) / 2],
   };
+}
+
+function latDistance_m(lat1: number, lat2: number): number {
+  const R = 6378137; // 地球半径（m）
+  const rad = Math.PI / 180;
+  return R * Math.abs(lat2 - lat1) * rad;
+}
+
+function lonDistance_m(
+  lon1: number,
+  lon2: number,
+  lat1: number,
+  lat2: number
+): number {
+  const R = 6378137; // 地球半径（m）
+
+  const rad = Math.PI / 180;
+
+  const avgLatRad = ((lat1 + lat2) / 2) * rad;
+  const deltaLon = Math.abs(lon2 - lon1) * rad;
+
+  return R * deltaLon * Math.cos(avgLatRad);
 }

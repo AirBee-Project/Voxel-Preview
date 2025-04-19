@@ -5,11 +5,13 @@ import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 import { OBJLoader } from "@loaders.gl/obj";
 import { useState } from "react";
 import { DisplayData } from "./types/displayData";
+import { ScatterplotLayer } from "@deck.gl/layers";
 import { PureVoxel } from "./types/pureVoxel";
 import pureVoxelToString from "./utils/Pvoxel-to-string";
 import hyperVoxelParse from "./utils/Hvoxel-parse";
 import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
 import pvoxelToDisplayData from "./utils/Pvoxel-to-display-data";
+import PvoxelToPointData from "./utils/Pvoxel-to-point-data";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -48,14 +50,7 @@ export default function App() {
 
   const layer = new SimpleMeshLayer({
     id: "box-geometry",
-    data: [
-      {
-        position: [0, 0],
-        altitude: 0,
-        scale: [40075016.68 / 2, 40075016.68 / 8, 1000000],
-        color: [255, 125, 125, 100],
-      },
-    ],
+    data: pvoxelToDisplayData(pvoxels),
     getPosition: (d) => d.position,
     getColor: (d) => d.color,
     mesh: "https://raw.githubusercontent.com/Tomoro0726/filehost/refs/heads/main/Box.obj",
@@ -66,6 +61,17 @@ export default function App() {
     pickable: true,
     loaders: [OBJLoader],
   });
+  const pointData = PvoxelToPointData(pvoxels);
+
+  const scatterLayer = new ScatterplotLayer({
+    id: "scatter",
+    data: pointData,
+    getPosition: (d) => d.position,
+    getRadius: (d) => d.radius,
+    getFillColor: (d) => d.color,
+    radiusUnits: "meters",
+    pickable: true,
+  });
 
   return (
     <div>
@@ -73,7 +79,7 @@ export default function App() {
         <DeckGL
           initialViewState={INITIAL_VIEW_STATE}
           controller
-          layers={[TileMapLayer, layer]}
+          layers={[TileMapLayer, scatterLayer]}
           width="100%"
           height="75%"
         />
