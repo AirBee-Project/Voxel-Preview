@@ -125,7 +125,7 @@ export default function App() {
         <DeckGL
           initialViewState={INITIAL_VIEW_STATE}
           controller
-          layers={[TileMapLayer, iconLayer, layer2]}
+          layers={[TileMapLayer, layer2]}
           width="100%"
           height="75%"
         />

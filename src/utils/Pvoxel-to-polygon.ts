@@ -9,19 +9,16 @@ export default function pvoxelToPolygon(pvoxels: PureVoxel[]): PolygonData[] {
   let result: PolygonData[] = [];
   for (let i = 0; i < pvoxels.length; i++) {
     let points = pvoxelToCoordinates(pvoxels[i]);
-    let elevation = getElevation(
-      (points.maxLat + points.minLat) / 2,
-      33554432 / 2 ** pvoxels[i].Z
-    );
+    let altitude = getAltitude(pvoxels[i]);
     result.push({
       points: [
-        [points.maxLon, points.maxLat, 100],
-        [points.minLon, points.maxLat, 100],
-        [points.minLon, points.minLat, 100],
-        [points.maxLon, points.minLat, 100],
-        [points.maxLon, points.maxLat, 100],
+        [points.maxLon, points.maxLat, altitude],
+        [points.minLon, points.maxLat, altitude],
+        [points.minLon, points.minLat, altitude],
+        [points.maxLon, points.minLat, altitude],
+        [points.maxLon, points.maxLat, altitude],
       ],
-      elevation: elevation,
+      elevation: 33554432 / 2 ** (pvoxels[i].Z + 1),
     });
   }
   return result;
@@ -63,7 +60,7 @@ function mercatorYToLat(y: number): number {
   return latDeg;
 }
 
-function getElevation(lat: number, elevation: number): number {
-  const scale = 1 / Math.cos((lat * Math.PI) / 180);
-  return elevation * scale;
+function getAltitude(item: PureVoxel): number {
+  let result = ((33554432 * 2) / 2 ** (item.Z + 2)) * item.F;
+  return result;
 }
