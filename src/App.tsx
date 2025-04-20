@@ -4,8 +4,7 @@ import { BitmapLayer } from "@deck.gl/layers";
 import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 import { OBJLoader } from "@loaders.gl/obj";
 import { useState } from "react";
-import { DisplayData } from "./types/displayData";
-import { ScatterplotLayer } from "@deck.gl/layers";
+import { ScatterplotLayer, PolygonLayer } from "@deck.gl/layers";
 import { PureVoxel } from "./types/pureVoxel";
 import pureVoxelToString from "./utils/Pvoxel-to-string";
 import hyperVoxelParse from "./utils/Hvoxel-parse";
@@ -13,6 +12,7 @@ import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
 import pvoxelToDisplayData from "./utils/Pvoxel-to-display-data";
 import PvoxelToPointData from "./utils/Pvoxel-to-point-data";
 import { IconLayer } from "@deck.gl/layers";
+import pvoxelToPolygon from "./utils/Pvoxel-to-polygon";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -99,13 +99,33 @@ export default function App() {
     getColor: [255, 0, 0],
   });
 
+  // データに仮の属性（populationやarea）を与える
+  const layer2 = new PolygonLayer({
+    id: "PolygonLayer",
+    data: pvoxelToPolygon(pvoxels),
+    extruded: true,
+    wireframe: true,
+    filled: true,
+    getPolygon: (d) => d.points,
+    getElevation: (d) => d.elevation,
+    getFillColor: [200, 100, 80, 180],
+
+    getLineColor: [255, 255, 255], // 輪郭線の色
+    getLineWidth: 10, // 輪郭線の幅（下の設定もセットで）
+    lineWidthUnits: "pixels", // 'meters' or 'pixels'
+    lineWidthScale: 1, // スケーリング（任意）
+    lineJointRounded: true, // 線の角を滑らかに
+    lineMiterLimit: 10, // 鋭角制御（任意）
+    pickable: true,
+  });
+
   return (
     <div>
       <div>
         <DeckGL
           initialViewState={INITIAL_VIEW_STATE}
           controller
-          layers={[TileMapLayer, iconLayer]}
+          layers={[TileMapLayer, iconLayer, layer2]}
           width="100%"
           height="75%"
         />
