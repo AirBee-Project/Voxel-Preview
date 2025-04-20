@@ -1,6 +1,6 @@
 import DeckGL from "@deck.gl/react";
 import { TileLayer } from "@deck.gl/geo-layers";
-import { BitmapLayer } from "@deck.gl/layers";
+import { BitmapLayer, ScatterplotLayer } from "@deck.gl/layers";
 import { useState } from "react";
 import { PolygonLayer } from "@deck.gl/layers";
 import { PureVoxel } from "./types/pureVoxel";
@@ -8,7 +8,6 @@ import pureVoxelToString from "./utils/Pvoxel-to-string";
 import hyperVoxelParse from "./utils/Hvoxel-parse";
 import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
 import pvoxelToPolygon from "./utils/Pvoxel-to-polygon";
-import { PickingInfo } from "@deck.gl/core";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -57,12 +56,25 @@ export default function App() {
 
     getLineColor: [255, 255, 255], // 輪郭線の色
     getLineWidth: 10, // 輪郭線の幅（下の設定もセットで）
-    lineWidthUnits: "pixels", // 'meters' or 'pixels'
-    lineWidthScale: 1, // スケーリング（任意）
-    lineJointRounded: true, // 線の角を滑らかに
-    lineMiterLimit: 10, // 鋭角制御（任意）
+    lineWidthUnits: "pixels",
+    lineWidthScale: 1,
     pickable: true,
   });
+
+  const layers = [
+    new ScatterplotLayer({
+      id: "custom-points",
+      data: [
+        { position: [0, 37.0], name: "Tokyo Station" }, // 東京駅
+        { position: [0, 38.0], name: "Osaka" }, // 大阪
+      ],
+      pickable: true,
+      getPosition: (d) => d.position,
+      getFillColor: [0, 128, 255],
+      getRadius: 50000, // メートル単位
+      radiusUnits: "meters",
+    }),
+  ];
 
   return (
     <div>
@@ -70,7 +82,7 @@ export default function App() {
         <DeckGL
           initialViewState={INITIAL_VIEW_STATE}
           controller
-          layers={[TileMapLayer, layer2]}
+          layers={[TileMapLayer, layer2, layers]}
           width="100%"
           height="75%"
           getTooltip={({ object }) =>
