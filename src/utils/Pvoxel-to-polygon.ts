@@ -1,6 +1,7 @@
 type PolygonData = {
   points: number[][];
   elevation: number;
+  voxelID: string;
 };
 
 import type { PureVoxel } from "../types/pureVoxel";
@@ -19,6 +20,7 @@ export default function pvoxelToPolygon(pvoxels: PureVoxel[]): PolygonData[] {
         [points.maxLon, points.maxLat, altitude],
       ],
       elevation: 33554432 / 2 ** (pvoxels[i].Z + 1),
+      voxelID: `${pvoxels[i].Z}/${pvoxels[i].X}/${pvoxels[i].Y}/${pvoxels[i].F}`,
     });
   }
   return result;

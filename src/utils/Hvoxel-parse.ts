@@ -33,7 +33,6 @@ export default function hyperVoxelParse(voxelsString: string): Voxel[] {
     };
     result.push(resultVoxel);
   }
-  console.log(result);
   return result;
 }
 

@@ -1,18 +1,14 @@
 import DeckGL from "@deck.gl/react";
 import { TileLayer } from "@deck.gl/geo-layers";
 import { BitmapLayer } from "@deck.gl/layers";
-import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
-import { OBJLoader } from "@loaders.gl/obj";
 import { useState } from "react";
-import { ScatterplotLayer, PolygonLayer } from "@deck.gl/layers";
+import { PolygonLayer } from "@deck.gl/layers";
 import { PureVoxel } from "./types/pureVoxel";
 import pureVoxelToString from "./utils/Pvoxel-to-string";
 import hyperVoxelParse from "./utils/Hvoxel-parse";
 import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
-import pvoxelToDisplayData from "./utils/Pvoxel-to-display-data";
-import PvoxelToPointData from "./utils/Pvoxel-to-point-data";
-import { IconLayer } from "@deck.gl/layers";
 import pvoxelToPolygon from "./utils/Pvoxel-to-polygon";
+import { PickingInfo } from "@deck.gl/core";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -49,57 +45,6 @@ export default function App() {
     pickable: true,
   });
 
-  const layer = new SimpleMeshLayer({
-    id: "box-geometry",
-    data: pvoxelToDisplayData(pvoxels),
-    getPosition: (d) => d.position,
-    getColor: (d) => d.color,
-    mesh: "https://raw.githubusercontent.com/Tomoro0726/filehost/refs/heads/main/Box.obj",
-    sizeScale: 1,
-    getOrientation: [0, 0, 0],
-    getTranslation: (d) => [0, 0, d.altitude],
-    getScale: (d) => d.scale,
-    pickable: true,
-    loaders: [OBJLoader],
-  });
-  const pointData = PvoxelToPointData(pvoxels);
-
-  const scatterLayer = new ScatterplotLayer({
-    id: "scatter",
-    data: pointData,
-    getPosition: (d) => d.position,
-    getRadius: (d) => d.radius,
-    getFillColor: (d) => d.color,
-    radiusUnits: "meters",
-    pickable: true,
-  });
-  const iconAtlas =
-    "https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png";
-  const iconMapping = {
-    marker: {
-      x: 0,
-      y: 0,
-      width: 128,
-      height: 128,
-      mask: true,
-      anchorY: 128,
-    },
-  };
-
-  const iconLayer = new IconLayer({
-    id: "icon-layer",
-    data: pointData,
-    pickable: true,
-    iconAtlas,
-    iconMapping,
-    getIcon: (d) => d.icon,
-    getPosition: (d) => d.position,
-    getSize: (d) => 50,
-    sizeScale: 1,
-    getColor: [255, 0, 0],
-  });
-
-  // データに仮の属性（populationやarea）を与える
   const layer2 = new PolygonLayer({
     id: "PolygonLayer",
     data: pvoxelToPolygon(pvoxels),
@@ -128,6 +73,11 @@ export default function App() {
           layers={[TileMapLayer, layer2]}
           width="100%"
           height="75%"
+          getTooltip={({ object }) =>
+            object && {
+              text: `${object.voxelID}`,
+            }
+          }
         />
       </div>
       <div className="mt-[75vh] w-[100%] h-[25vh] bg-amber-300">
