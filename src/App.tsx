@@ -1,6 +1,6 @@
 import DeckGL from "@deck.gl/react";
 import { TileLayer } from "@deck.gl/geo-layers";
-import { BitmapLayer, ScatterplotLayer } from "@deck.gl/layers";
+import { BitmapLayer } from "@deck.gl/layers";
 import { useState } from "react";
 import { PolygonLayer } from "@deck.gl/layers";
 import { PureVoxel } from "./types/pureVoxel";
