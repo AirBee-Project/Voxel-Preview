@@ -1,61 +1,103 @@
+// ==============================
+// 型定義
+// ==============================
+
 type PolygonData = {
-  points: number[][];
-  elevation: number;
-  voxelID: string;
+  points: number[][]; // 経度・緯度・標高の三次元座標
+  elevation: number; // 高さ情報（階層に応じて）
+  voxelID: string; // 一意のID
 };
 
 import type { PureVoxel } from "../types/pureVoxel";
 
-export default function pvoxelToPolygon(pvoxels: PureVoxel[]): PolygonData[] {
-  let result: PolygonData[] = [];
-  for (let i = 0; i < pvoxels.length; i++) {
-    let points = pvoxelToCoordinates(pvoxels[i]);
-    let altitude = getAltitude(pvoxels[i]);
-    result.push({
-      points: [
-        [points.maxLon, points.maxLat, altitude],
-        [points.minLon, points.maxLat, altitude],
-        [points.minLon, points.minLat, altitude],
-        [points.maxLon, points.minLat, altitude],
-        [points.maxLon, points.maxLat, altitude],
-      ],
-      elevation: 33554432 / 2 ** (pvoxels[i].Z + 1),
-      voxelID: `${pvoxels[i].Z}/${pvoxels[i].X}/${pvoxels[i].Y}/${pvoxels[i].F}`,
-    });
-  }
-  return result;
-}
-
-type PvoxleCoordinates = {
+type PvoxelCoordinates = {
   maxLon: number;
   minLon: number;
   maxLat: number;
   minLat: number;
 };
 
-function pvoxelToCoordinates(item: PureVoxel): PvoxleCoordinates {
-  const n = 2 ** item.Z;
-  const lonDegPerTile = 360 / n;
+// ==============================
+// メイン処理
+// ==============================
 
-  const minLon = -180 + lonDegPerTile * item.X;
-  const maxLon = -180 + lonDegPerTile * (item.X + 1);
+export default function pvoxelToPolygon(pvoxels: PureVoxel[]): PolygonData[] {
+  return pvoxels.map((voxel) => {
+    const coordinates = pvoxelToCoordinates(voxel);
+    const altitude = getAltitude(voxel);
 
-  const maxLat = mercatorYToLat((1 / 2 ** item.Z) * item.Y);
-  const minLat = mercatorYToLat((1 / 2 ** item.Z) * (item.Y + 1));
-  return {
-    maxLon: maxLon,
-    minLon: minLon,
-    maxLat: maxLat,
-    minLat: minLat,
-  };
+    const points = generateRectanglePoints(coordinates, altitude);
+
+    return {
+      points,
+      elevation: calculateElevation(voxel),
+      voxelID: generateVoxelID(voxel),
+    };
+  });
 }
 
-//y は 0〜1 の範囲で、地図の縦方向の位置（0 = 上端、1 = 下端）
+// ==============================
+// 補助関数群
+// ==============================
+
+/**
+ * 各ボクセルの経緯度範囲を計算
+ */
+function pvoxelToCoordinates(voxel: PureVoxel): PvoxelCoordinates {
+  const n = 2 ** voxel.Z;
+  const lonPerTile = 360 / n;
+
+  const minLon = -180 + lonPerTile * voxel.X;
+  const maxLon = -180 + lonPerTile * (voxel.X + 1);
+
+  const maxLat = mercatorYToLat((1 / n) * voxel.Y);
+  const minLat = mercatorYToLat((1 / n) * (voxel.Y + 1));
+
+  return { maxLon, minLon, maxLat, minLat };
+}
+
+/**
+ * メルカトルY座標（0〜1）を緯度に変換
+ */
 function mercatorYToLat(y: number): number {
   return (90 - 180 * y) * 2;
 }
 
-function getAltitude(item: PureVoxel): number {
-  let result = ((33554432 * 2) / 2 ** (item.Z + 2)) * item.F;
-  return result;
+/**
+ * 標高の計算（Z, F を元に算出）
+ */
+function getAltitude(voxel: PureVoxel): number {
+  return ((33554432 * 2) / 2 ** (voxel.Z + 2)) * voxel.F;
+}
+
+/**
+ * ポリゴンの外接矩形ポイントを生成（上から時計回り + 最後に始点をもう一度）
+ */
+function generateRectanglePoints(
+  coord: PvoxelCoordinates,
+  altitude: number
+): number[][] {
+  const { maxLon, minLon, maxLat, minLat } = coord;
+
+  return [
+    [maxLon, maxLat, altitude],
+    [minLon, maxLat, altitude],
+    [minLon, minLat, altitude],
+    [maxLon, minLat, altitude],
+    [maxLon, maxLat, altitude], // クローズポリゴン
+  ];
+}
+
+/**
+ * 表示用のボクセルIDを生成
+ */
+function generateVoxelID(voxel: PureVoxel): string {
+  return `${voxel.Z}/${voxel.X}/${voxel.Y}/${voxel.F}`;
+}
+
+/**
+ * ビジュアライゼーション用の高さ（階層に応じて）
+ */
+function calculateElevation(voxel: PureVoxel): number {
+  return 33554432 / 2 ** (voxel.Z + 1);
 }
