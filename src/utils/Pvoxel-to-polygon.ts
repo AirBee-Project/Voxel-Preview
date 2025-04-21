@@ -52,14 +52,7 @@ function pvoxelToCoordinates(item: PureVoxel): PvoxleCoordinates {
 
 //y は 0〜1 の範囲で、地図の縦方向の位置（0 = 上端、1 = 下端）
 function mercatorYToLat(y: number): number {
-  const PI = Math.PI;
-  const radToDeg = 180 / PI;
-
-  // 逆メルカトル変換
-  const latRad = Math.atan(Math.sinh(PI * (1 - 2 * y)));
-  const latDeg = latRad * radToDeg;
-
-  return latDeg;
+  return (90 - 180 * y) * 2;
 }
 
 function getAltitude(item: PureVoxel): number {

@@ -8,6 +8,7 @@ import pureVoxelToString from "./utils/Pvoxel-to-string";
 import hyperVoxelParse from "./utils/Hvoxel-parse";
 import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
 import pvoxelToPolygon from "./utils/Pvoxel-to-polygon";
+import { COORDINATE_SYSTEM } from "@deck.gl/core";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -45,6 +46,7 @@ export default function App() {
   });
 
   const layer2 = new PolygonLayer({
+    coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
     id: "PolygonLayer",
     data: pvoxelToPolygon(pvoxels),
     extruded: true,

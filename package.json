@@ -10,6 +10,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@deck.gl/core": "^9.1.11",
     "@deck.gl/geo-layers": "^9.1.11",
     "@deck.gl/layers": "^9.1.11",
     "@deck.gl/react": "^9.1.11",
