@@ -9,6 +9,7 @@ import hyperVoxelParse from "./utils/Hvoxel-parse";
 import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
 import pvoxelToPolygon from "./utils/Pvoxel-to-polygon";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
+import { invoke } from "@tauri-apps/api/core";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -97,6 +98,7 @@ export default function App() {
 
             //計算した値を各ステートに受け渡し
             setPvoxels(pvoxels);
+            executeCommands();
           }}
         />
         <input
