@@ -61,28 +61,13 @@ export default function App() {
     pickable: true,
   });
 
-  const layers = [
-    new ScatterplotLayer({
-      id: "custom-points",
-      data: [
-        { position: [0, 37.0], name: "Tokyo Station" }, // 東京駅
-        { position: [0, 38.0], name: "Osaka" }, // 大阪
-      ],
-      pickable: true,
-      getPosition: (d) => d.position,
-      getFillColor: [0, 128, 255],
-      getRadius: 50000, // メートル単位
-      radiusUnits: "meters",
-    }),
-  ];
-
   return (
     <div>
       <div>
         <DeckGL
           initialViewState={INITIAL_VIEW_STATE}
           controller
-          layers={[TileMapLayer, layer2, layers]}
+          layers={[TileMapLayer, layer2]}
           width="100%"
           height="75%"
           getTooltip={({ object }) =>
