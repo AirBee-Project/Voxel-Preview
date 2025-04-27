@@ -1,5 +1,8 @@
 import { IconTrash, IconEye } from "@tabler/icons-react";
-export default function LineObject() {
+type Props = {
+  id: number;
+};
+export default function LineObject({ id }: Props) {
   return (
     <div className="m-[1.5vh] p-[3%] border-0 border-blue-400 rounded-[4px] bg-[#ececec]">
       <div className="flex items-center">
@@ -19,6 +22,7 @@ export default function LineObject() {
           placeholder="サイズ"
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
+        <p>ID:{id}</p>
         <IconTrash className="mx-[3%]" />
         <IconEye className="mx-[3%]" />
       </div>

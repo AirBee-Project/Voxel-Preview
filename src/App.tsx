@@ -36,17 +36,16 @@ export default function App() {
     },
     pickable: true,
   });
-
   return (
     <div>
       <div className="w-[100%] flex">
         <div className="w-[25%] flex-col">
-          <div className="bg-amber-200">
+          <div className="bg-amber-200 flex justify-center p-[1.5%]">
             <h1>オブジェクトたち</h1>
           </div>
-          <PointObject />
-          <LineObject />
-          <VoxelObject />
+          <PointObject id={1} />
+          <LineObject id={1} />
+          <VoxelObject id={1} />
         </div>
         <div className="w-[75%] h-[100vh] relative">
           <DeckGL
