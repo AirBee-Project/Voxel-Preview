@@ -43,9 +43,22 @@ export default function App() {
           <div className="bg-amber-200 flex justify-center p-[1.5%]">
             <h1>オブジェクトたち</h1>
           </div>
-          <PointObject id={1} />
-          <LineObject id={1} />
-          <VoxelObject id={1} />
+          <div>
+            <PointObject id={1} />
+            <LineObject id={1} />
+            <VoxelObject id={1} />
+          </div>
+          <div className="flex justify-between p-[4%] px-[10%]">
+            <button className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-amber-400 transition duration-300">
+              <span className="bg-amber-200">Point</span>を追加
+            </button>
+            <button className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-blue-400 transition duration-300">
+              <span className="bg-blue-200">Line</span>を追加
+            </button>
+            <button className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-green-400 transition duration-300">
+              <span className="bg-green-200">Voxel</span>を追加
+            </button>
+          </div>
         </div>
         <div className="w-[75%] h-[100vh] relative">
           <DeckGL
