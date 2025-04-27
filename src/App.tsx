@@ -4,7 +4,8 @@ import { BitmapLayer } from "@deck.gl/layers";
 import PointObject from "./components/pointObject";
 import LineObject from "./components/LIneObject";
 import VoxelObject from "./components/VoxelObject";
-import React, { useState, ReactElement } from "react";
+import React, { useState, ReactElement, createContext } from "react";
+import { Layer } from "@deck.gl/core"; // Deck.glのLayer型をインポート
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
