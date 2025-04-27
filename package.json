@@ -10,10 +10,12 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@chakra-ui/react": "^3.16.1",
     "@deck.gl/core": "^9.1.11",
     "@deck.gl/geo-layers": "^9.1.11",
     "@deck.gl/layers": "^9.1.11",
     "@deck.gl/react": "^9.1.11",
+    "@tabler/icons-react": "^3.31.0",
     "@tailwindcss/vite": "^4.1.4",
     "@tauri-apps/api": "^2.5.0",
     "@tauri-apps/plugin-opener": "^2",

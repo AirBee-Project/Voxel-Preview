@@ -1,14 +1,9 @@
 import DeckGL from "@deck.gl/react";
 import { TileLayer } from "@deck.gl/geo-layers";
 import { BitmapLayer } from "@deck.gl/layers";
-import { useState } from "react";
-import { PureVoxel } from "./types/pureVoxel";
-import pureVoxelToString from "./utils/Pvoxel-to-string";
-import hyperVoxelParse from "./utils/Hvoxel-parse";
-import hvoxelsToPvoxels from "./utils/Hvoxel-to-Pvoxel";
-import pvoxelToPolygon from "./utils/Pvoxel-to-polygon";
-import { COORDINATE_SYSTEM } from "@deck.gl/core";
-import { invoke } from "@tauri-apps/api/core";
+import PointObject from "./components/pointObject";
+import LineObject from "./components/LIneObject";
+import VoxelObject from "./components/VoxelObject";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -45,8 +40,15 @@ export default function App() {
   return (
     <div>
       <div className="w-[100%] flex">
-        <div className="w-[25%] bg-amber-300 h-[100vh]"></div>
-        <div className="w-[75%] bg-black h-[100vh] relative">
+        <div className="w-[25%] flex-col">
+          <div className="bg-amber-200">
+            <h1>オブジェクトたち</h1>
+          </div>
+          <PointObject />
+          <LineObject />
+          <VoxelObject />
+        </div>
+        <div className="w-[75%] h-[100vh] relative">
           <DeckGL
             initialViewState={INITIAL_VIEW_STATE}
             controller
