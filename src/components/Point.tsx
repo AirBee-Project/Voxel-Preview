@@ -1,4 +1,5 @@
 import { IconTrash, IconEye } from "@tabler/icons-react";
+import { Item } from "../types/Item";
 type Props = {
   id: number;
   item: Item[];

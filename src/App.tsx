@@ -80,7 +80,7 @@ export default function App() {
             <h1>オブジェクトたち</h1>
           </div>
           <div>
-            <Point id={1} />
+            <Point id={1} item={item} setItem={setItem} />
           </div>
           <div className="flex justify-between p-[4%] px-[10%]">
             <button

@@ -49,6 +49,8 @@ This template should help get you started developing with Tauri, React and Types
 
 ### State（変数+関数）
 
+#### State の定義
+
 ```TypeScript
 const [item, setItem] = useState<Item[]>([]);
 ```
@@ -56,3 +58,25 @@ const [item, setItem] = useState<Item[]>([]);
 のような形が理想的である。
 
 - `[変数名,set+変数名]`の形で作成
+
+#### 子コンポーネントへのステートの受け渡し
+
+```tsx:App.tsx
+export default function App() {
+  const [item, setItem] = useState<Item[]>([]);
+  return(
+    <Point id={1} item={item} setItem={setItem} />
+  )
+}
+```
+
+```tsx:/componets/Point.tsx
+import { Item } from "../types/Item";
+type Props = {
+  id: number;
+  item: Item[];
+  setItem: React.Dispatch<React.SetStateAction<Item[]>>;
+};
+```
+
+基本的に子コンポーネントでも親のステートと同じ名前の関数と変数を用意し、そこに受け渡しを行う。
