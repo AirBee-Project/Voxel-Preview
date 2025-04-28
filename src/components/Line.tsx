@@ -1,10 +1,10 @@
 import { IconTrash, IconEye } from "@tabler/icons-react";
-import { Object } from "../types/Item";
+import { Item } from "../types/Item";
 
 type Props = {
   id: number;
-  objects: Object[];
-  setObject: React.Dispatch<React.SetStateAction<Object[]>>;
+  item: Item[];
+  setItem: React.Dispatch<React.SetStateAction<Item[]>>;
 };
 export default function LineObject(props: Props) {
   return (

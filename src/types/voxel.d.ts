@@ -1,4 +1,4 @@
-type VoxelValue = {
+type VoxelDefinition = {
   Z: number;
   X: [number, number] | number;
   Y: [number, number] | number;
@@ -9,5 +9,5 @@ export type Voxel = {
   color: string;
   opacity: number;
   size: number;
-  voxels: VoxelValue[];
+  voxels: VoxelDefinition[];
 };

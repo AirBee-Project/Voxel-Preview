@@ -1,19 +1,19 @@
-import { LineObjectData } from "./Line";
-import { PointObjectData } from "./Point";
-import { VoxelObjectData } from "./Voxel";
+import { Line } from "./Line";
+import { Point } from "./Point";
+import { Voxel } from "./Voxel";
 
 type ItemType = "point" | "line" | "voxel";
 
 type ItemDataMap = {
-  point: PointObjectData;
-  line: LineObjectData;
-  voxel: VoxelObjectData;
+  point: Point;
+  line: Line;
+  voxel: Voxel;
 };
 
-export type Object<T extends ObjectType = ObjectType> = {
+export type Item<T extends ItemType = ItemType> = {
   id: number;
   type: "point" | "line" | "voxel";
   isDeleted: boolean;
   isVisible: boolean;
-  data: ObjectDataMap[T];
+  data: ItemDataMap[T];
 };

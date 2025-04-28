@@ -2,8 +2,8 @@ import DeckGL from "@deck.gl/react";
 import { TileLayer } from "@deck.gl/geo-layers";
 import { BitmapLayer } from "@deck.gl/layers";
 import { useState } from "react";
-import { Object } from "./types/Item";
-import PointObject from "./components/Point";
+import { Item } from "./types/Item";
+import Point from "./components/Point";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -35,11 +35,11 @@ const TileMapLayer = new TileLayer({
 });
 
 export default function App() {
-  const [objects, setObjects] = useState<Object[]>([]);
+  const [item, setItem] = useState<Item[]>([]);
 
   function addObject(type: "point" | "line" | "voxel") {
-    let newObject: Object = {
-      id: objects.length + 1,
+    let newObject: Item = {
+      id: item.length + 1,
       type: type,
       isDeleted: false,
       isVisible: false,
@@ -69,7 +69,7 @@ export default function App() {
               voxels: [],
             },
     };
-    setObjects([...objects, newObject]);
+    setItem([...item, newObject]);
   }
 
   return (
@@ -80,7 +80,7 @@ export default function App() {
             <h1>オブジェクトたち</h1>
           </div>
           <div>
-            <PointObject id={1} />
+            <Point id={1} />
           </div>
           <div className="flex justify-between p-[4%] px-[10%]">
             <button

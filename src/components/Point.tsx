@@ -1,8 +1,9 @@
 import { IconTrash, IconEye } from "@tabler/icons-react";
 type Props = {
   id: number;
+  item: Item[];
+  setItem: React.Dispatch<React.SetStateAction<Item[]>>;
 };
-
 export default function PointObject({ id }: Props) {
   return (
     <div className="m-[1.5vh] p-[3%] border-0 border-blue-400 rounded-[4px] bg-[#ececec]">
