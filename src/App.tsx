@@ -1,11 +1,11 @@
 import DeckGL from "@deck.gl/react";
 import { TileLayer } from "@deck.gl/geo-layers";
 import { BitmapLayer } from "@deck.gl/layers";
-import PointObject from "./components/pointObject";
-import LineObject from "./components/LIneObject";
+import PointObject from "./components/PointObject";
+import LineObject from "./components/LineObject";
 import VoxelObject from "./components/VoxelObject";
 import React, { useState, ReactElement, createContext } from "react";
-import { Layer } from "@deck.gl/core"; // Deck.glのLayer型をインポート
+import { Layer, LayersList } from "@deck.gl/core"; // Deck.glのLayer型をインポート
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -15,18 +15,49 @@ const INITIAL_VIEW_STATE = {
   bearing: 0,
 };
 
+const TileMapLayer = new TileLayer({
+  id: "TileMapLayer",
+  data: "https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png",
+  maxZoom: 18,
+  minZoom: 0,
+  renderSubLayers: (props) => {
+    const { boundingBox } = props.tile;
+    return new BitmapLayer(props, {
+      data: undefined,
+      image: props.data,
+      bounds: [
+        boundingBox[0][0],
+        boundingBox[0][1],
+        boundingBox[1][0],
+        boundingBox[1][1],
+      ],
+    });
+  },
+  pickable: true,
+});
+
 export default function App() {
-  type ObjectComponet = {
+  type LayerState = {
     id: number;
-    type: "point" | "line" | "voxel";
-    component: ReactElement;
+    type: "point" | "line" | "voxel" | "Tile";
+    component: ReactElement | undefined;
+    layer: Layer | undefined;
+    deleted: boolean;
   };
 
-  const [objectComponets, setObjectComponets] = useState<ObjectComponet[]>([]);
+  const [layers, setLayers] = useState<LayerState[]>([
+    {
+      id: 0,
+      type: "Tile",
+      component: undefined,
+      layer: TileMapLayer,
+      deleted: false,
+    },
+  ]);
 
   function pushObject(type: "point" | "line" | "voxel") {
-    let addObject: ObjectComponet;
-    const lastObject = objectComponets[objectComponets.length - 1];
+    let addObject: LayerState;
+    const lastObject = layers[layers.length - 1];
 
     addObject = {
       id: lastObject ? lastObject.id + 1 : 1,
@@ -36,6 +67,7 @@ export default function App() {
           <PointObject
             key={lastObject ? lastObject.id + 1 : 1}
             id={lastObject ? lastObject.id + 1 : 1}
+            stateFunction={setLayers}
           />
         ) : type === "line" ? (
           <LineObject
@@ -48,32 +80,13 @@ export default function App() {
             id={lastObject ? lastObject.id + 1 : 1}
           />
         ),
+      layer: undefined,
+      deleted: false,
     };
 
-    const newObjectComponets = [...objectComponets, addObject];
-    setObjectComponets(newObjectComponets);
+    const newObject = [...layers, addObject];
+    setLayers(newObject);
   }
-
-  const TileMapLayer = new TileLayer({
-    id: "TileMapLayer",
-    data: "https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png",
-    maxZoom: 18,
-    minZoom: 0,
-    renderSubLayers: (props) => {
-      const { boundingBox } = props.tile;
-      return new BitmapLayer(props, {
-        data: undefined,
-        image: props.data,
-        bounds: [
-          boundingBox[0][0],
-          boundingBox[0][1],
-          boundingBox[1][0],
-          boundingBox[1][1],
-        ],
-      });
-    },
-    pickable: true,
-  });
 
   return (
     <div>
@@ -82,7 +95,7 @@ export default function App() {
           <div className="bg-amber-200 flex justify-center p-[1.5%]">
             <h1>オブジェクトたち</h1>
           </div>
-          {objectComponets.map((item) => (
+          {layers.map((item) => (
             <div key={item.id}>
               {item.component} {/* JSX要素として表示 */}
             </div>
@@ -113,7 +126,9 @@ export default function App() {
             initialViewState={INITIAL_VIEW_STATE}
             controller
             width="75vw"
-            layers={[TileMapLayer]}
+            layers={layers.map((item) => {
+              return item.layer;
+            })}
             getTooltip={({ object }) =>
               object && {
                 text: `${object.voxelID}`,
