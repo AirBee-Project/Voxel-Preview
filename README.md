@@ -61,6 +61,8 @@ const [item, setItem] = useState<Item[]>([]);
 
 #### 子コンポーネントへのステートの受け渡し
 
+State を定義した親コンポーネント
+
 ```tsx:App.tsx
 export default function App() {
   const [item, setItem] = useState<Item[]>([]);
@@ -70,13 +72,22 @@ export default function App() {
 }
 ```
 
-```tsx:/componets/Point.tsx
+State が渡された子コンポーネントの Props の定義
+
+```tsx:/components/Point.tsx
 import { Item } from "../types/Item";
 type Props = {
   id: number;
   item: Item[];
   setItem: React.Dispatch<React.SetStateAction<Item[]>>;
 };
+
+export default function PointObject({ id, item, setItem }: Props) {
+  何らかの処理....
+  return(
+    DOMを返す...
+  )
+}
 ```
 
 基本的に子コンポーネントでも親のステートと同じ名前の関数と変数を用意し、そこに受け渡しを行う。

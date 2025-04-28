@@ -5,7 +5,10 @@ type Props = {
   item: Item[];
   setItem: React.Dispatch<React.SetStateAction<Item[]>>;
 };
-export default function PointObject({ id }: Props) {
+export default function PointObject({ id, item, setItem }: Props) {
+  let myItem = item.find((e) => {
+    return e.id === id;
+  });
   return (
     <div className="m-[1.5vh] p-[3%] border-0 border-blue-400 rounded-[4px] bg-[#ececec]">
       <div className="flex items-center">
@@ -13,11 +16,13 @@ export default function PointObject({ id }: Props) {
         <input
           type="text"
           placeholder="色"
+          value={myItem?.data.color}
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
         <input
           type="number"
           placeholder="不透明度"
+          value={myItem?.data.opacity}
           min={0}
           max={100}
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
@@ -25,6 +30,7 @@ export default function PointObject({ id }: Props) {
         <input
           type="number"
           placeholder="サイズ"
+          value={myItem?.data.size}
           min={0}
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
@@ -39,6 +45,7 @@ export default function PointObject({ id }: Props) {
           <input
             type="number"
             placeholder="経度"
+            value={myItem?.data.lat}
             max={180}
             min={-180}
             className="border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
