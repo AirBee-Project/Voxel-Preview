@@ -1,4 +1,4 @@
-export type LineObjectData = {
+export type Line = {
   color: string;
   opacity: number;
   size: number;

@@ -1,4 +1,4 @@
-export type PointObjectData = {
+export type Point = {
   color: string;
   opacity: number;
   size: number;

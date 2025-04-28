@@ -1,4 +1,4 @@
-import { Voxel } from "../types/voxel.d";
+import { Voxel } from "../types/Voxel";
 import { PureVoxel } from "../types/pureVoxel";
 
 export default function hvoxelsToPvoxels(Voxels: Voxel[]): PureVoxel[] {

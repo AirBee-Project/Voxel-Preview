@@ -2,7 +2,8 @@ import DeckGL from "@deck.gl/react";
 import { TileLayer } from "@deck.gl/geo-layers";
 import { BitmapLayer } from "@deck.gl/layers";
 import { useState } from "react";
-import { Object } from "./types/Object";
+import { Object } from "./types/Item";
+import PointObject from "./components/Point";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -78,7 +79,9 @@ export default function App() {
           <div className="bg-amber-200 flex justify-center p-[1.5%]">
             <h1>オブジェクトたち</h1>
           </div>
-
+          <div>
+            <PointObject id={1} />
+          </div>
           <div className="flex justify-between p-[4%] px-[10%]">
             <button
               className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-amber-400 transition duration-300"

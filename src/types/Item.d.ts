@@ -1,10 +1,10 @@
-import { LineObjectData } from "./LineObjectData";
-import { PointObjectData } from "./PointObjectData";
-import { VoxelObjectData } from "./VoxelObjectData";
+import { LineObjectData } from "./Line";
+import { PointObjectData } from "./Point";
+import { VoxelObjectData } from "./Voxel";
 
-type ObjectType = "point" | "line" | "voxel";
+type ItemType = "point" | "line" | "voxel";
 
-type ObjectDataMap = {
+type ItemDataMap = {
   point: PointObjectData;
   line: LineObjectData;
   voxel: VoxelObjectData;

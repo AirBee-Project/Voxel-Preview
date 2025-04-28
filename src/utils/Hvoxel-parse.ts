@@ -1,4 +1,4 @@
-import type { Voxel } from "../types/voxel.d";
+import type { Voxel } from "../types/Voxel";
 
 export default function hyperVoxelParse(voxelsString: string): Voxel[] {
   voxelsString = voxelsString.replace("[", "");
