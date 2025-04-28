@@ -1,11 +1,8 @@
 import DeckGL from "@deck.gl/react";
 import { TileLayer } from "@deck.gl/geo-layers";
 import { BitmapLayer } from "@deck.gl/layers";
-import PointObject from "./components/PointObject";
-import LineObject from "./components/LineObject";
-import VoxelObject from "./components/VoxelObject";
-import React, { useState, ReactElement, createContext } from "react";
-import { Layer, LayersList } from "@deck.gl/core"; // Deck.glのLayer型をインポート
+import { useState } from "react";
+import { Object } from "./types/Object";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -37,55 +34,41 @@ const TileMapLayer = new TileLayer({
 });
 
 export default function App() {
-  type LayerState = {
-    id: number;
-    type: "point" | "line" | "voxel" | "Tile";
-    component: ReactElement | undefined;
-    layer: Layer | undefined;
-    deleted: boolean;
-  };
+  const [objects, setObjects] = useState<Object[]>([]);
 
-  const [layers, setLayers] = useState<LayerState[]>([
-    {
-      id: 0,
-      type: "Tile",
-      component: undefined,
-      layer: TileMapLayer,
-      deleted: false,
-    },
-  ]);
-
-  function pushObject(type: "point" | "line" | "voxel") {
-    let addObject: LayerState;
-    const lastObject = layers[layers.length - 1];
-
-    addObject = {
-      id: lastObject ? lastObject.id + 1 : 1,
+  function addObject(type: "point" | "line" | "voxel") {
+    let newObject: Object = {
+      id: objects.length + 1,
       type: type,
-      component:
-        type === "point" ? (
-          <PointObject
-            key={lastObject ? lastObject.id + 1 : 1}
-            id={lastObject ? lastObject.id + 1 : 1}
-            stateFunction={setLayers}
-          />
-        ) : type === "line" ? (
-          <LineObject
-            key={lastObject ? lastObject.id + 1 : 1}
-            id={lastObject ? lastObject.id + 1 : 1}
-          />
-        ) : (
-          <VoxelObject
-            key={lastObject ? lastObject.id + 1 : 1}
-            id={lastObject ? lastObject.id + 1 : 1}
-          />
-        ),
-      layer: undefined,
-      deleted: false,
+      isDeleted: false,
+      isVisible: false,
+      data:
+        type === "point"
+          ? {
+              color: "#FF0000",
+              opacity: 80,
+              size: 200,
+              lat: 0,
+              lon: 0,
+            }
+          : type === "line"
+          ? {
+              color: "#FF0000",
+              opacity: 80,
+              size: 200,
+              lat1: 0,
+              lon1: 0,
+              lat2: 90,
+              lon2: 90,
+            }
+          : {
+              color: "#FF0000",
+              opacity: 80,
+              size: 200,
+              voxels: [],
+            },
     };
-
-    const newObject = [...layers, addObject];
-    setLayers(newObject);
+    setObjects([...objects, newObject]);
   }
 
   return (
@@ -95,27 +78,29 @@ export default function App() {
           <div className="bg-amber-200 flex justify-center p-[1.5%]">
             <h1>オブジェクトたち</h1>
           </div>
-          {layers.map((item) => (
-            <div key={item.id}>
-              {item.component} {/* JSX要素として表示 */}
-            </div>
-          ))}
+
           <div className="flex justify-between p-[4%] px-[10%]">
             <button
-              onClick={() => pushObject("point")}
               className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-amber-400 transition duration-300"
+              onClick={(e) => {
+                addObject("point");
+              }}
             >
               <span className="bg-amber-200">Point</span>を追加
             </button>
             <button
-              onClick={() => pushObject("line")}
               className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-blue-400 transition duration-300"
+              onClick={(e) => {
+                addObject("line");
+              }}
             >
               <span className="bg-blue-200">Line</span>を追加
             </button>
             <button
-              onClick={() => pushObject("voxel")}
               className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-green-400 transition duration-300"
+              onClick={(e) => {
+                addObject("voxel");
+              }}
             >
               <span className="bg-green-200">Voxel</span>を追加
             </button>
@@ -126,9 +111,7 @@ export default function App() {
             initialViewState={INITIAL_VIEW_STATE}
             controller
             width="75vw"
-            layers={layers.map((item) => {
-              return item.layer;
-            })}
+            layers={[TileMapLayer]}
             getTooltip={({ object }) =>
               object && {
                 text: `${object.voxelID}`,

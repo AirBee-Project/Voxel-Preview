@@ -1,6 +1,6 @@
 export type PointObjectData = {
   color: string;
-  opacity: string;
+  opacity: number;
   size: number;
   lat: number;
   lon: number;

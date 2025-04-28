@@ -1,6 +1,6 @@
 export type LineObjectData = {
   color: string;
-  opacity: string;
+  opacity: number;
   size: number;
   lat1: number;
   lon1: number;
