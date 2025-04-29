@@ -42,10 +42,35 @@ This template should help get you started developing with Tauri, React and Types
 - 型+名前で情報を判断できるようにする `型A[]⇒型B[]`のような形だと理想的
   - 後はここに`Convert`,`Select`, `Filter`のような名前をつけることで役割をイメージさせる
 
+### /utils
+
+- ファイル名も関数名も`camelCase`で命名を行う
+- ファイルの Dir から関数であることは自明であるため、ファイル名に関数であることを含める必要はない
+- 型も含めて、役割を判断できるような命名を
+- 複雑な関数や複数のファイルから参照する関数を保存する
+  - 複雑な関数 ⇒.tsx のファイルの可読性の向上、保守性の向上のために保存
+  - 複数ファイルから参照する関数 ⇒ 当たり前
+
 ### 変数
 
 - `camelCase`で命名を行う
 - 基本的に単数形で表記する。複数形の情報は型を用いて表現する。
+
+### 定数
+
+- 単に`const`で定義したものを定数というわけではない
+- 広いスコープで変化せず、値そのものに意味がある場合にそれを定数とする
+- `UPPER_SNAKE_CASE`で命名を行う
+
+```JavaScript
+const INITIAL_VIEW_STATE = {
+  longitude: 139.6917,
+  latitude: 35.6895,
+  zoom: 15,
+  pitch: 60,
+  bearing: 0,
+};
+```
 
 ### State（変数+関数）
 

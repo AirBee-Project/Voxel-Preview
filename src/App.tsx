@@ -1,11 +1,10 @@
 import DeckGL from "@deck.gl/react";
-import { TileLayer } from "@deck.gl/geo-layers";
-import { BitmapLayer } from "@deck.gl/layers";
 import { useState } from "react";
 import { Item } from "./types/Item";
 import Point from "./components/Point";
 import Line from "./components/Line";
 import Voxel from "./components/Voxel";
+import generateLayer from "./utils/generateLayer";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -14,27 +13,6 @@ const INITIAL_VIEW_STATE = {
   pitch: 60,
   bearing: 0,
 };
-
-const TileMapLayer = new TileLayer({
-  id: "TileMapLayer",
-  data: "https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png",
-  maxZoom: 18,
-  minZoom: 0,
-  renderSubLayers: (props) => {
-    const { boundingBox } = props.tile;
-    return new BitmapLayer(props, {
-      data: undefined,
-      image: props.data,
-      bounds: [
-        boundingBox[0][0],
-        boundingBox[0][1],
-        boundingBox[1][0],
-        boundingBox[1][1],
-      ],
-    });
-  },
-  pickable: true,
-});
 
 export default function App() {
   const [item, setItem] = useState<Item[]>([]);
@@ -125,7 +103,7 @@ export default function App() {
             initialViewState={INITIAL_VIEW_STATE}
             controller
             width="75vw"
-            layers={[TileMapLayer]}
+            layers={generateLayer(item)}
             getTooltip={({ object }) =>
               object && {
                 text: `${object.voxelID}`,
