@@ -61,10 +61,10 @@ export default function generateLayer(item: Item[]): LayersList {
     filled: true,
     getPolygon: (d) => d.points,
     getElevation: (d) => d.elevation,
-    getFillColor: [200, 100, 80, 180],
+    getFillColor: (d) => d.color,
 
-    getLineColor: (d) => d.color, // 輪郭線の色
-    getLineWidth: 10, // 輪郭線の幅（下の設定もセットで）
+    getLineColor: (d) => [255, 255, 255, 125], // 輪郭線の色
+    getLineWidth: 100, // 輪郭線の幅（下の設定もセットで）
     lineWidthUnits: "pixels",
     lineWidthScale: 1,
     pickable: true,
