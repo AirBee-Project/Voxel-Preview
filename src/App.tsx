@@ -73,7 +73,7 @@ export default function App() {
           <div className="flex justify-between p-[4%] px-[10%]">
             <button
               className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-amber-400 transition duration-300"
-              onClick={(e) => {
+              onClick={() => {
                 addObject("point");
               }}
             >
@@ -81,7 +81,7 @@ export default function App() {
             </button>
             <button
               className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-blue-400 transition duration-300"
-              onClick={(e) => {
+              onClick={() => {
                 addObject("line");
               }}
             >
@@ -89,7 +89,7 @@ export default function App() {
             </button>
             <button
               className="bg-[#eaeaea] border-1 border-gray-300 rounded-[4px] p-[3%] hover:bg-green-400 transition duration-300"
-              onClick={(e) => {
+              onClick={() => {
                 addObject("voxel");
               }}
             >

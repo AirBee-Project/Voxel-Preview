@@ -63,7 +63,7 @@ export default function generateLayer(item: Item[]): LayersList {
     getElevation: (d) => d.elevation,
     getFillColor: (d) => d.color,
 
-    getLineColor: (d) => [255, 255, 255, 125], // 輪郭線の色
+    getLineColor: [255, 255, 255, 125], // 輪郭線の色
     getLineWidth: 100, // 輪郭線の幅（下の設定もセットで）
     lineWidthUnits: "pixels",
     lineWidthScale: 1,

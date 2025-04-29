@@ -1,4 +1,3 @@
-import { IconTrash, IconEye } from "@tabler/icons-react";
 import { Item } from "../types/Item";
 type Props = {
   id: number;
@@ -71,9 +70,6 @@ export default function Point({ id, item, setItem }: Props) {
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
         <p>ID:{id}</p>
-
-        <IconTrash className="mx-[3%]" />
-        <IconEye className="mx-[3%]" />
       </div>
       <div>
         <div className="flex mt-[2%]">

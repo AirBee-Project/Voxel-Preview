@@ -1,4 +1,3 @@
-import { IconTrash, IconEye } from "@tabler/icons-react";
 import { Item } from "../types/Item";
 import { useState } from "react";
 import hyperVoxelParse from "../utils/hyperVoxelParse";
@@ -57,8 +56,6 @@ export default function Voxel({ id, item, setItem }: Props) {
         />
 
         <p>ID:{id}</p>
-        <IconTrash className="mx-[3%]" />
-        <IconEye className="mx-[3%]" />
       </div>
       <div>
         <div className="flex mt-[2%]">
