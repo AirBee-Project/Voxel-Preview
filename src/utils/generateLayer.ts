@@ -1,9 +1,12 @@
-import { Layer, LayersList } from "deck.gl";
+import { Color, LayersList } from "deck.gl";
 import { TileLayer } from "@deck.gl/geo-layers";
-import { BitmapLayer, GeoJsonLayer } from "@deck.gl/layers";
+import { BitmapLayer, GeoJsonLayer, PolygonLayer } from "@deck.gl/layers";
 import { Item } from "../types/Item";
 import { GeoJSON } from "geojson";
 import colorHexToRgba from "../utils/colorHexToRgba";
+import { COORDINATE_SYSTEM } from "@deck.gl/core";
+import hyperVoxelParse from "./hyperVoxelParse";
+
 /**
  * StateであるItem[]を入れると、DeckglのLayerに変換し出力する関数
  */
@@ -14,6 +17,11 @@ export default function generateLayer(item: Item[]): LayersList {
   );
   let lineItem: Item<"line">[] = item.filter(
     (e): e is Item<"line"> => !e.isDeleted && !e.isVisible && e.type === "line"
+  );
+
+  let voxelItem: Item<"voxel">[] = item.filter(
+    (e): e is Item<"voxel"> =>
+      !e.isDeleted && !e.isVisible && e.type === "voxel"
   );
 
   //PointはまとめてGeoJsonLayerとして表示
@@ -37,11 +45,29 @@ export default function generateLayer(item: Item[]): LayersList {
     stroked: true,
     filled: false,
     lineWidthUnits: "pixels",
-    getLineColor: (d) => d.properties.color, // ← 色を個別設定
+    getLineColor: (d) => d.properties.color as Color, // ← 色を個別設定
     getLineWidth: (d) => d.properties.width, // ← 太さを個別設定
   });
 
   //VoxelはPolygonLayerとしてまとめて出力
+
+  const voxelPolygonLayer = new PolygonLayer({
+    coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
+    id: "PolygonLayer",
+    data: generatePolygonLayer(voxelItem),
+    extruded: true,
+    wireframe: true,
+    filled: true,
+    getPolygon: (d) => d.points,
+    getElevation: (d) => d.elevation,
+    getFillColor: [200, 100, 80, 180],
+
+    getLineColor: (d) => d.color, // 輪郭線の色
+    getLineWidth: 10, // 輪郭線の幅（下の設定もセットで）
+    lineWidthUnits: "pixels",
+    lineWidthScale: 1,
+    pickable: true,
+  });
 
   //国土地理院から取得したTileMapを表示
   const tileMapLayer = new TileLayer({
@@ -65,7 +91,12 @@ export default function generateLayer(item: Item[]): LayersList {
     pickable: true,
   });
 
-  let reuslt: LayersList = [tileMapLayer, pointGeoJsonLayer, lineGeoJsonLayer];
+  let reuslt: LayersList = [
+    tileMapLayer,
+    pointGeoJsonLayer,
+    lineGeoJsonLayer,
+    voxelPolygonLayer,
+  ];
   return reuslt;
 }
 
@@ -114,4 +145,16 @@ function generateLineGeoJson(line: Item<"line">[]): GeoJSON {
     });
   }
   return result;
+}
+
+type PolygonData = {
+  points: number[][]; // 経度・緯度・標高の三次元座標
+  elevation: number; // 高さ情報（階層に応じて）
+  voxelID: string; // 一意のID
+  color: Color;
+};
+function generatePolygonLayer(voxel: Item<"voxel">[]): PolygonData[] {
+  for (let i = 0; i < voxel.length; i++) {
+    let parsedHyperVoxel = hyperVoxelParse(voxel[i].data.voxels);
+  }
 }

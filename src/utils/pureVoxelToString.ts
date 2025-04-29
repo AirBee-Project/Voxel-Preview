@@ -1,4 +1,4 @@
-import { PureVoxel } from "../types/pureVoxel";
+import { PureVoxel } from "../types/PureVoxel";
 
 export default function pureVoxelToString(pureVoxels: PureVoxel[]): string {
   let result: string = "";

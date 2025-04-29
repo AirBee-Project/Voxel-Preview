@@ -1,11 +1,13 @@
-import type { Voxel } from "../types/Voxel";
+import type { VoxelDefinition } from "../types/VoxelDefinition";
 
-export default function hyperVoxelParse(voxelsString: string): Voxel[] {
+export default function hyperVoxelParse(
+  voxelsString: string
+): VoxelDefinition[] {
   voxelsString = voxelsString.replace("[", "");
   voxelsString = voxelsString.replace("]", "");
   voxelsString = voxelsString.replace(/'/g, "");
   let voxelStringList: String[] = voxelsString.split(",");
-  let result: Voxel[] = [];
+  let result: VoxelDefinition[] = [];
 
   if (voxelStringList.length === 0) {
     return result;
@@ -25,7 +27,7 @@ export default function hyperVoxelParse(voxelsString: string): Voxel[] {
     }
     let voxelParseList = voxelStringList[i].split("/");
     let zValue: number = Number(voxelParseList[0]);
-    let resultVoxel: Voxel = {
+    let resultVoxel: VoxelDefinition = {
       Z: zValue,
       X: parseDimensionRange(zValue, "X", voxelParseList[1]),
       Y: parseDimensionRange(zValue, "Y", voxelParseList[2]),

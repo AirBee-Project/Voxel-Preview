@@ -8,7 +8,7 @@ type PolygonData = {
   voxelID: string; // 一意のID
 };
 
-import type { PureVoxel } from "../types/pureVoxel";
+import type { PureVoxel } from "../types/PureVoxel";
 
 type PvoxelCoordinates = {
   maxLon: number;
