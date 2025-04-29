@@ -28,7 +28,7 @@ export default function App() {
           ? {
               color: "#FF0000",
               opacity: 80,
-              size: 20,
+              size: 10,
               lat: 0,
               lon: 0,
             }
@@ -36,7 +36,7 @@ export default function App() {
           ? {
               color: "#00FF00",
               opacity: 80,
-              size: 20,
+              size: 10,
               lat1: 0,
               lon1: 0,
               lat2: 45,
