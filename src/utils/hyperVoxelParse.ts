@@ -1,11 +1,15 @@
-import type { Voxel } from "../types/voxel.d";
+import type { VoxelDefinition } from "../types/VoxelDefinition";
 
-export default function hyperVoxelParse(voxelsString: string): Voxel[] {
+export default function hyperVoxelParse(
+  voxelsString: string
+): VoxelDefinition[] {
   voxelsString = voxelsString.replace("[", "");
   voxelsString = voxelsString.replace("]", "");
   voxelsString = voxelsString.replace(/'/g, "");
-  let voxelStringList: String[] = voxelsString.split(",");
-  let result: Voxel[] = [];
+  let voxelStringList: string[] = voxelsString
+    .split(",")
+    .filter((v) => v.trim() !== "");
+  let result: VoxelDefinition[] = [];
 
   if (voxelStringList.length === 0) {
     return result;
@@ -13,8 +17,10 @@ export default function hyperVoxelParse(voxelsString: string): Voxel[] {
 
   //時間に関する情報を削除
   voxelStringList = voxelStringList.map((voxelString) => {
-    if (voxelString.indexOf("_") != -1) {
-      return voxelString.substring(0, voxelString.indexOf("_"));
+    if (!voxelString) return "";
+    const underscoreIndex = voxelString.indexOf("_");
+    if (underscoreIndex !== -1) {
+      return voxelString.substring(0, underscoreIndex);
     }
     return voxelString;
   });
@@ -25,7 +31,7 @@ export default function hyperVoxelParse(voxelsString: string): Voxel[] {
     }
     let voxelParseList = voxelStringList[i].split("/");
     let zValue: number = Number(voxelParseList[0]);
-    let resultVoxel: Voxel = {
+    let resultVoxel: VoxelDefinition = {
       Z: zValue,
       X: parseDimensionRange(zValue, "X", voxelParseList[1]),
       Y: parseDimensionRange(zValue, "Y", voxelParseList[2]),
@@ -52,6 +58,7 @@ function parseDimensionRange(
       }
     }
   } else if (item.indexOf(":") != -1) {
+    console.log(item);
     let itemList = item.split(":");
     let numberItemList: number[] = itemList.map((num) => Number(num));
     numberItemList = numberItemList.sort();

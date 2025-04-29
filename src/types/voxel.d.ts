@@ -1,6 +1,7 @@
+import { VoxelDefinition } from "./VoxelDefinition";
+
 export type Voxel = {
-  Z: number;
-  X: [number, number] | number;
-  Y: [number, number] | number;
-  F: [number, number] | number;
+  color: string;
+  opacity: number;
+  voxel: VoxelDefinition[];
 };

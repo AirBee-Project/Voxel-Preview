@@ -1,7 +1,9 @@
-import { Voxel } from "../types/voxel.d";
-import { PureVoxel } from "../types/pureVoxel";
+import { PureVoxel } from "../types/PureVoxel";
+import { VoxelDefinition } from "../types/VoxelDefinition";
 
-export default function hvoxelsToPvoxels(Voxels: Voxel[]): PureVoxel[] {
+export default function hyperVoxelToPureVoxel(
+  Voxels: VoxelDefinition[]
+): PureVoxel[] {
   let result: PureVoxel[] = [];
   for (let i = 0; i < Voxels.length; i++) {
     let x: number[] = enumerateRange(Voxels[i].X);
