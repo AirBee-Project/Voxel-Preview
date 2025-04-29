@@ -12,6 +12,9 @@ export default function generateLayer(item: Item[]): LayersList {
     (e): e is Item<"point"> =>
       !e.isDeleted && !e.isVisible && e.type === "point"
   );
+  let lineItem: Item<"line">[] = item.filter(
+    (e): e is Item<"line"> => !e.isDeleted && !e.isVisible && e.type === "line"
+  );
 
   //PointはまとめてGeoJsonLayerとして表示
   const pointGeoJsonLayer = new GeoJsonLayer({
@@ -19,6 +22,7 @@ export default function generateLayer(item: Item[]): LayersList {
     data: generatePointGeoJson(pointItem),
     pickable: true,
     filled: true,
+    pointRadiusUnits: "pixels",
     pointRadiusMinPixels: 1,
     pointRadiusScale: 1,
     getFillColor: (d) => d.properties.color, // 個別カラー
@@ -26,6 +30,16 @@ export default function generateLayer(item: Item[]): LayersList {
   });
 
   //LineはまとめてGeoJsonLayerとして表示
+  const lineGeoJsonLayer = new GeoJsonLayer({
+    id: "geojson-lines",
+    data: generateLineGeoJson(lineItem),
+    pickable: true,
+    stroked: true,
+    filled: false,
+    lineWidthUnits: "pixels",
+    getLineColor: (d) => d.properties.color, // ← 色を個別設定
+    getLineWidth: (d) => d.properties.width, // ← 太さを個別設定
+  });
 
   //VoxelはPolygonLayerとしてまとめて出力
 
@@ -51,7 +65,7 @@ export default function generateLayer(item: Item[]): LayersList {
     pickable: true,
   });
 
-  let reuslt: LayersList = [tileMapLayer, pointGeoJsonLayer];
+  let reuslt: LayersList = [tileMapLayer, pointGeoJsonLayer, lineGeoJsonLayer];
   return reuslt;
 }
 
@@ -75,5 +89,29 @@ function generatePointGeoJson(point: Item<"point">[]): GeoJSON {
     });
   }
 
+  return result;
+}
+
+function generateLineGeoJson(line: Item<"line">[]): GeoJSON {
+  const result: GeoJSON = {
+    type: "FeatureCollection",
+    features: [],
+  };
+  for (let i = 0; i < line.length; i++) {
+    result.features.push({
+      type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: [
+          [line[i].data.lon1, line[i].data.lat1],
+          [line[i].data.lon2, line[i].data.lat2],
+        ],
+      },
+      properties: {
+        color: colorHexToRgba(line[i].data.color, line[i].data.opacity), // 赤
+        width: line[i].data.size,
+      },
+    });
+  }
   return result;
 }

@@ -7,7 +7,7 @@ export default function colorHexToRgba(
 
   // 6桁以外はエラーにする
   if (cleanHex.length !== 6) {
-    throw new Error("Invalid HEX color");
+    return [255, 255, 255, 255];
   }
 
   // R, G, Bをそれぞれ取り出して10進数に変換

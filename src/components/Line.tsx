@@ -53,7 +53,7 @@ export default function Line({ id, item, setItem }: Props) {
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
         <input
-          type="text"
+          type="number"
           placeholder="サイズ"
           value={myItem.data.size}
           onChange={(e) => {
@@ -127,7 +127,7 @@ export default function Line({ id, item, setItem }: Props) {
           <input
             type="number"
             placeholder="緯度"
-            value={myItem.data.lon2}
+            value={myItem.data.lat2}
             onChange={(e) => {
               updateItem({
                 ...myItem,
