@@ -4,6 +4,8 @@ import { BitmapLayer } from "@deck.gl/layers";
 import { useState } from "react";
 import { Item } from "./types/Item";
 import Point from "./components/Point";
+import Line from "./components/Line";
+import Voxel from "./components/Voxel";
 
 const INITIAL_VIEW_STATE = {
   longitude: 139.6917,
@@ -80,7 +82,16 @@ export default function App() {
             <h1>オブジェクトたち</h1>
           </div>
           <div>
-            <Point id={1} item={item} setItem={setItem} />
+            {item.map((e) => {
+              switch (e.type) {
+                case "point":
+                  return <Point id={e.id} item={item} setItem={setItem} />;
+                case "line":
+                  return <Line id={e.id} item={item} setItem={setItem} />;
+                case "voxel":
+                  return <Voxel id={e.id} item={item} setItem={setItem} />;
+              }
+            })}
           </div>
           <div className="flex justify-between p-[4%] px-[10%]">
             <button

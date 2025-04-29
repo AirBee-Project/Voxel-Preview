@@ -5,10 +5,19 @@ type Props = {
   item: Item[];
   setItem: React.Dispatch<React.SetStateAction<Item[]>>;
 };
-export default function PointObject({ id, item, setItem }: Props) {
-  let myItem = item.find((e) => {
-    return e.id === id;
-  });
+export default function Point({ id, item, setItem }: Props) {
+  let myItem = item.find(
+    (e): e is Item<"point"> => e.id === id && e.type === "point"
+  )!;
+  function updateItem(newItem: Item<"point">): void {
+    const result = item.map((e) => {
+      if (e.id === newItem.id) {
+        return newItem;
+      }
+      return e;
+    });
+    setItem(result);
+  }
   return (
     <div className="m-[1.5vh] p-[3%] border-0 border-blue-400 rounded-[4px] bg-[#ececec]">
       <div className="flex items-center">
@@ -16,22 +25,49 @@ export default function PointObject({ id, item, setItem }: Props) {
         <input
           type="text"
           placeholder="色"
-          value={myItem?.data.color}
+          value={myItem.data.color}
+          onChange={(e) => {
+            updateItem({
+              ...myItem,
+              data: {
+                ...myItem.data,
+                color: e.target.value,
+              },
+            });
+          }}
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
         <input
           type="number"
           placeholder="不透明度"
-          value={myItem?.data.opacity}
+          value={myItem.data.opacity}
           min={0}
           max={100}
+          onChange={(e) => {
+            updateItem({
+              ...myItem,
+              data: {
+                ...myItem.data,
+                opacity: parseFloat(e.target.value),
+              },
+            });
+          }}
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
         <input
           type="number"
           placeholder="サイズ"
-          value={myItem?.data.size}
+          value={myItem.data.size}
           min={0}
+          onChange={(e) => {
+            updateItem({
+              ...myItem,
+              data: {
+                ...myItem.data,
+                size: parseFloat(e.target.value),
+              },
+            });
+          }}
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
         <p>ID:{id}</p>
@@ -45,18 +81,37 @@ export default function PointObject({ id, item, setItem }: Props) {
           <input
             type="number"
             placeholder="経度"
-            value={myItem?.data.lat}
+            value={myItem.data.lon}
             max={180}
             min={-180}
             className="border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
+            onChange={(e) => {
+              updateItem({
+                ...myItem,
+                data: {
+                  ...myItem.data,
+                  lon: parseFloat(e.target.value),
+                },
+              });
+            }}
           />
           <p>緯度</p>
           <input
             type="number"
             placeholder="緯度"
+            value={myItem.data.lat}
             max={90}
             min={-90}
             className="border-gray-500 border-1 mx-[2%] bg-[#FFFFFF] ml-[3%]"
+            onChange={(e) => {
+              updateItem({
+                ...myItem,
+                data: {
+                  ...myItem.data,
+                  lat: parseFloat(e.target.value),
+                },
+              });
+            }}
           />
         </div>
       </div>
