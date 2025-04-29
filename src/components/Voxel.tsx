@@ -55,21 +55,7 @@ export default function Voxel({ id, item, setItem }: Props) {
           }}
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
-        <input
-          type="text"
-          placeholder="サイズ"
-          value={myItem.data.size}
-          onChange={(e) => {
-            updateItem({
-              ...myItem,
-              data: {
-                ...myItem.data,
-                opacity: parseFloat(e.target.value),
-              },
-            });
-          }}
-          className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
-        />
+
         <p>ID:{id}</p>
         <IconTrash className="mx-[3%]" />
         <IconEye className="mx-[3%]" />

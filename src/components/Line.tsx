@@ -91,6 +91,8 @@ export default function Line({ id, item, setItem }: Props) {
           />
           <input
             type="number"
+            max={85.0511}
+            min={-85.0511}
             placeholder="緯度"
             value={myItem.data.lat1}
             onChange={(e) => {
@@ -128,6 +130,8 @@ export default function Line({ id, item, setItem }: Props) {
             type="number"
             placeholder="緯度"
             value={myItem.data.lat2}
+            max={85.0511}
+            min={-85.0511}
             onChange={(e) => {
               updateItem({
                 ...myItem,

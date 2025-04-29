@@ -28,24 +28,23 @@ export default function App() {
           ? {
               color: "#FF0000",
               opacity: 80,
-              size: 200,
+              size: 20,
               lat: 0,
               lon: 0,
             }
           : type === "line"
           ? {
-              color: "#FF0000",
+              color: "#00FF00",
               opacity: 80,
-              size: 200,
+              size: 20,
               lat1: 0,
               lon1: 0,
-              lat2: 90,
-              lon2: 90,
+              lat2: 45,
+              lon2: 45,
             }
           : {
-              color: "#FF0000",
-              opacity: 80,
-              size: 200,
+              color: "#0000FF",
+              opacity: 30,
               voxel: [],
             },
     };

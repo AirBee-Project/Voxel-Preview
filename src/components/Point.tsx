@@ -100,8 +100,8 @@ export default function Point({ id, item, setItem }: Props) {
             type="number"
             placeholder="緯度"
             value={myItem.data.lat}
-            max={90}
-            min={-90}
+            max={85.0511}
+            min={-85.0511}
             className="border-gray-500 border-1 mx-[2%] bg-[#FFFFFF] ml-[3%]"
             onChange={(e) => {
               updateItem({
