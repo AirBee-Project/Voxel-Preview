@@ -2,12 +2,13 @@
 // 型定義
 // ==============================
 
-type PolygonData = {
+type Polygon = {
   points: number[][]; // 経度・緯度・標高の三次元座標
   elevation: number; // 高さ情報（階層に応じて）
   voxelID: string; // 一意のID
+  color: Color;
 };
-
+import { Color } from "deck.gl";
 import type { PureVoxel } from "../types/PureVoxel";
 
 type PvoxelCoordinates = {
@@ -21,7 +22,10 @@ type PvoxelCoordinates = {
 // メイン処理
 // ==============================
 
-export default function pvoxelToPolygon(pvoxels: PureVoxel[]): PolygonData[] {
+export default function pvoxelToPolygon(
+  pvoxels: PureVoxel[],
+  color: Color
+): Polygon[] {
   return pvoxels.map((voxel) => {
     const coordinates = pvoxelToCoordinates(voxel);
     const altitude = getAltitude(voxel);
@@ -32,6 +36,7 @@ export default function pvoxelToPolygon(pvoxels: PureVoxel[]): PolygonData[] {
       points,
       elevation: calculateElevation(voxel),
       voxelID: generateVoxelID(voxel),
+      color: color,
     };
   });
 }

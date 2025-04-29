@@ -6,7 +6,9 @@ export default function hyperVoxelParse(
   voxelsString = voxelsString.replace("[", "");
   voxelsString = voxelsString.replace("]", "");
   voxelsString = voxelsString.replace(/'/g, "");
-  let voxelStringList: String[] = voxelsString.split(",");
+  let voxelStringList: string[] = voxelsString
+    .split(",")
+    .filter((v) => v.trim() !== "");
   let result: VoxelDefinition[] = [];
 
   if (voxelStringList.length === 0) {
@@ -15,8 +17,10 @@ export default function hyperVoxelParse(
 
   //時間に関する情報を削除
   voxelStringList = voxelStringList.map((voxelString) => {
-    if (voxelString.indexOf("_") != -1) {
-      return voxelString.substring(0, voxelString.indexOf("_"));
+    if (!voxelString) return "";
+    const underscoreIndex = voxelString.indexOf("_");
+    if (underscoreIndex !== -1) {
+      return voxelString.substring(0, underscoreIndex);
     }
     return voxelString;
   });
@@ -54,6 +58,7 @@ function parseDimensionRange(
       }
     }
   } else if (item.indexOf(":") != -1) {
+    console.log(item);
     let itemList = item.split(":");
     let numberItemList: number[] = itemList.map((num) => Number(num));
     numberItemList = numberItemList.sort();

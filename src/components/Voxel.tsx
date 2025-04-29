@@ -1,11 +1,14 @@
 import { IconTrash, IconEye } from "@tabler/icons-react";
 import { Item } from "../types/Item";
+import { useState } from "react";
+import hyperVoxelParse from "../utils/hyperVoxelParse";
 type Props = {
   id: number;
   item: Item[];
   setItem: React.Dispatch<React.SetStateAction<Item[]>>;
 };
 export default function Voxel({ id, item, setItem }: Props) {
+  const [inputVoxel, setInputVoxel] = useState<string>("");
   let myItem = item.find(
     (e): e is Item<"voxel"> => e.id === id && e.type === "voxel"
   )!;
@@ -38,7 +41,7 @@ export default function Voxel({ id, item, setItem }: Props) {
           className="w-[20%] border-gray-500 border-1 mx-[2%] bg-[#FFFFFF]"
         />
         <input
-          type="text"
+          type="number"
           placeholder="不透明度"
           value={myItem.data.opacity}
           onChange={(e) => {
@@ -76,6 +79,17 @@ export default function Voxel({ id, item, setItem }: Props) {
           <input
             type="text"
             placeholder="ボクセルをコンマ区切り"
+            value={inputVoxel}
+            onChange={(e) => {
+              setInputVoxel(e.target.value);
+              updateItem({
+                ...myItem,
+                data: {
+                  ...myItem.data,
+                  voxel: hyperVoxelParse(e.target.value),
+                },
+              });
+            }}
             className="border-gray-500 border-1 bg-[#FFFFFF] w-[100%] h-[100px] align-top"
           />
         </div>

@@ -46,7 +46,7 @@ export default function App() {
               color: "#FF0000",
               opacity: 80,
               size: 200,
-              voxels: [],
+              voxel: [],
             },
     };
     setItem([...item, newObject]);

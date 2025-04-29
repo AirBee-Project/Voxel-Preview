@@ -5,7 +5,8 @@ import { Item } from "../types/Item";
 import { GeoJSON } from "geojson";
 import colorHexToRgba from "../utils/colorHexToRgba";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
-import hyperVoxelParse from "./hyperVoxelParse";
+import hyperVoxelToPureVoxel from "./hyperVoxelToPureVoxel";
+import pvoxelToPolygon from "./pureVoxelToPolygon";
 
 /**
  * StateであるItem[]を入れると、DeckglのLayerに変換し出力する関数
@@ -147,14 +148,21 @@ function generateLineGeoJson(line: Item<"line">[]): GeoJSON {
   return result;
 }
 
-type PolygonData = {
+type Polygon = {
   points: number[][]; // 経度・緯度・標高の三次元座標
   elevation: number; // 高さ情報（階層に応じて）
   voxelID: string; // 一意のID
   color: Color;
 };
-function generatePolygonLayer(voxel: Item<"voxel">[]): PolygonData[] {
+function generatePolygonLayer(voxel: Item<"voxel">[]): Polygon[] {
+  let result: Polygon[] = [];
   for (let i = 0; i < voxel.length; i++) {
-    let parsedHyperVoxel = hyperVoxelParse(voxel[i].data.voxels);
+    let pureVoxel = hyperVoxelToPureVoxel(voxel[i].data.voxel);
+    let polygon = pvoxelToPolygon(
+      pureVoxel,
+      colorHexToRgba(voxel[i].data.color, voxel[i].data.opacity)
+    );
+    result.push(...polygon);
   }
+  return result;
 }
