@@ -33,9 +33,9 @@ export default function hyperVoxelParse(
     let zValue: number = Number(voxelParseList[0]);
     let resultVoxel: VoxelDefinition = {
       Z: zValue,
-      X: parseDimensionRange(zValue, "X", voxelParseList[1]),
-      Y: parseDimensionRange(zValue, "Y", voxelParseList[2]),
-      F: parseDimensionRange(zValue, "F", voxelParseList[3]),
+      F: parseDimensionRange(zValue, "F", voxelParseList[1]),
+      X: parseDimensionRange(zValue, "X", voxelParseList[2]),
+      Y: parseDimensionRange(zValue, "Y", voxelParseList[3]),
     };
     result.push(resultVoxel);
   }
