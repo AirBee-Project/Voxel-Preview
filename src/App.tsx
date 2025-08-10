@@ -58,6 +58,9 @@ export default function App() {
           <div className="bg-amber-200 flex justify-center p-[1.5%]">
             <h1>オブジェクトたち</h1>
           </div>
+          <div className="flex justify-center p-[1.5%]">
+            <h1>AfterUnlimitRange,BeforeUnlimitRangeには非対応</h1>
+          </div>
           <div>
             {item.map((e) => {
               switch (e.type) {
