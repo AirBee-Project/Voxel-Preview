@@ -1,7 +1,3 @@
-# Tauri + React + Typescript
+# Voxel-Preview
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+IPA の定義した 4 次元空間 ID を WEB 上で閲覧可能なツールです。
