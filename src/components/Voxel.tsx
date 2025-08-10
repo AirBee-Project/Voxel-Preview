@@ -61,7 +61,7 @@ export default function Voxel({ id, item, setItem }: Props) {
         <div className="flex mt-[2%]">
           <input
             type="text"
-            placeholder="{z}/{f}/{x}/{f}"
+            placeholder="{z}/{f}/{x}/{y}"
             value={inputVoxel}
             onChange={(e) => {
               setInputVoxel(e.target.value);
