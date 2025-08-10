@@ -14,9 +14,9 @@ export default function hyperVoxelToPureVoxel(
         for (let findex = 0; findex < f.length; findex++) {
           result.push({
             Z: Voxels[i].Z,
+            F: f[findex],
             X: x[xindex],
             Y: y[yindex],
-            F: f[findex],
           });
         }
       }
@@ -24,23 +24,14 @@ export default function hyperVoxelToPureVoxel(
   }
   //重複排除
   result = [...new Set(result)];
+
+  console.log(result);
   return result;
 }
 
 function enumerateRange(item: [number, number] | number): number[] {
-  let result: number[] = [];
-  if (typeof item === "number") {
-    result.push(item as number);
-  } else {
-    let tmp = item as [number, number];
-    if (tmp[0] == tmp[1]) {
-      result.push(tmp[0]);
-    } else {
-      tmp = tmp.sort();
-      for (let i = tmp[0]; i < tmp[1] + 1; i++) {
-        result.push(i);
-      }
-    }
-  }
-  return result;
+  if (typeof item === "number") return [item];
+
+  const [start, end] = [...item].sort((a, b) => a - b);
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }

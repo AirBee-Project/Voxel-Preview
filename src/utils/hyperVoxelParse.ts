@@ -39,6 +39,8 @@ export default function hyperVoxelParse(
     };
     result.push(resultVoxel);
   }
+
+  console.log(result);
   return result;
 }
 
@@ -58,10 +60,10 @@ function parseDimensionRange(
       }
     }
   } else if (item.indexOf(":") != -1) {
-    console.log(item);
     let itemList = item.split(":");
     let numberItemList: number[] = itemList.map((num) => Number(num));
     numberItemList = numberItemList.sort();
+    console.log(numberItemList);
     return [numberItemList[0], numberItemList[1]];
   } else {
     return Number(item);

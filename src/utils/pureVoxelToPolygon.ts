@@ -97,7 +97,7 @@ function generateRectanglePoints(
  * 表示用のボクセルIDを生成
  */
 function generateVoxelID(voxel: PureVoxel): string {
-  return `${voxel.Z}/${voxel.X}/${voxel.Y}/${voxel.F}`;
+  return `${voxel.Z}/${voxel.F}/${voxel.X}/${voxel.Y}`;
 }
 
 /**
